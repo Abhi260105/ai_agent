@@ -60,19 +60,23 @@ class Agent:
         verbose = verbose if verbose is not None else config.agent.verbose
         
         try:
-            # TODO: This will be implemented in Phase 2
-            # For now, return a placeholder
+            # Execute using the agent graph
+            from app.agent.graph import agent_graph
             
-            logger.warning("Agent execution not yet implemented - Phase 2")
+            graph_result = agent_graph.run(goal)
             
-            # Placeholder result
-            from datetime import datetime
+            # Convert GraphExecutionResult to PlanExecutionResult
+            final_state = graph_result.final_state
+            
             result = PlanExecutionResult(
-                plan_id="placeholder",
+                plan_id=final_state.plan.id if final_state.plan else "no_plan",
                 objective=goal,
-                status="failed",
-                error_summary="Agent execution logic not yet implemented (Phase 2)",
-                started_at=datetime.now()
+                status="success" if graph_result.status == "success" else "failed",
+                completed_steps=final_state.execution_context.completed_steps,
+                failed_steps=final_state.execution_context.failed_steps,
+                action_summary=final_state.action_summary,
+                error_summary=graph_result.error_message,
+                started_at=final_state.started_at
             )
             result.mark_completed()
             
