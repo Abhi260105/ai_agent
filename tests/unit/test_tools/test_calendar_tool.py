@@ -13,7 +13,7 @@ class TestCalendarTool:
     @pytest.fixture
     def calendar_tool(self):
         """Create a CalendarTool instance for testing."""
-        from app.tools.calendar_tool import CalendarTool
+        from app.tools.calendar import CalendarTool
         return CalendarTool()
     
     @pytest.fixture
