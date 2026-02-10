@@ -274,3 +274,89 @@ class HealthCheck:
             check()
         
         return len(self.errors) == 0
+    
+    def print_summary(self):
+        """Print health check summary"""
+        print("\n" + "=" * 60)
+        print("SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for c in self.checks if c['status'])
+        total = len(self.checks)
+        
+        print(f"\nChecks: {passed}/{total} passed")
+        
+        if self.warnings:
+            print(f"\nWarnings ({len(self.warnings)}):")
+            for warning in self.warnings:
+                print(f"  ⚠ {warning}")
+        
+        if self.errors:
+            print(f"\nErrors ({len(self.errors)}):")
+            for error in self.errors:
+                print(f"  ✗ {error}")
+        
+        if not self.errors and not self.warnings:
+            print("\n✓ System health: EXCELLENT")
+        elif not self.errors:
+            print("\n⚠ System health: GOOD (with warnings)")
+        else:
+            print("\n✗ System health: POOR (action required)")
+        
+        print("\n" + "=" * 60)
+    
+    def export_report(self, filepath: str):
+        """Export health check report"""
+        report = {
+            "timestamp": datetime.now().isoformat(),
+            "checks": self.checks,
+            "warnings": self.warnings,
+            "errors": self.errors,
+            "summary": {
+                "total_checks": len(self.checks),
+                "passed": sum(1 for c in self.checks if c['status']),
+                "warnings": len(self.warnings),
+                "errors": len(self.errors)
+            }
+        }
+        
+        with open(filepath, 'w') as f:
+            json.dump(report, f, indent=2)
+        
+        print(f"\n✓ Report exported to: {filepath}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="System health check tool"
+    )
+    parser.add_argument(
+        '--db-path',
+        default='data/planner.db',
+        help='Path to database file'
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='Verbose output'
+    )
+    parser.add_argument(
+        '--export',
+        help='Export report to JSON file'
+    )
+    
+    args = parser.parse_args()
+    
+    checker = HealthCheck(args.db_path, args.verbose)
+    
+    success = checker.run_all_checks()
+    checker.print_summary()
+    
+    if args.export:
+        checker.export_report(args.export)
+    
+    sys.exit(0 if success else 1)
+
+
+if __name__ == "__main__":
+    main()
