@@ -143,3 +143,134 @@ class HealthCheck:
         except Exception as e:
             self.add_check("Database Size", False, str(e))
             return False
+    
+    def check_memory_usage(self) -> bool:
+        """Check system memory usage"""
+        self.log("Checking memory usage...")
+        
+        try:
+            memory = psutil.virtual_memory()
+            
+            self.log(f"Memory usage: {memory.percent}%", "INFO")
+            
+            if memory.percent > 90:
+                self.add_warning(f"High memory usage: {memory.percent}%")
+            
+            self.add_check(
+                "Memory Usage",
+                memory.percent < 95,
+                f"{memory.percent}%"
+            )
+            return True
+            
+        except Exception as e:
+            self.add_check("Memory Usage", False, str(e))
+            return False
+    
+    def check_disk_space(self) -> bool:
+        """Check disk space"""
+        self.log("Checking disk space...")
+        
+        try:
+            db_dir = os.path.dirname(os.path.abspath(self.db_path))
+            disk = psutil.disk_usage(db_dir)
+            
+            self.log(f"Disk usage: {disk.percent}%", "INFO")
+            
+            if disk.percent > 90:
+                self.add_warning(f"Low disk space: {disk.percent}% used")
+            
+            self.add_check(
+                "Disk Space",
+                disk.percent < 95,
+                f"{disk.percent}% used"
+            )
+            return True
+            
+        except Exception as e:
+            self.add_check("Disk Space", False, str(e))
+            return False
+    
+    def check_data_freshness(self) -> bool:
+        """Check if data is recent"""
+        self.log("Checking data freshness...")
+        
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute("""
+                SELECT MAX(created_at) FROM memory
+            """)
+            
+            latest = cursor.fetchone()[0]
+            conn.close()
+            
+            if latest:
+                latest_dt = datetime.fromisoformat(latest)
+                age_days = (datetime.now() - latest_dt).days
+                
+                self.log(f"Latest memory: {age_days} days old", "INFO")
+                
+                if age_days > 30:
+                    self.add_warning(f"No recent data (last: {age_days} days ago)")
+                
+                self.add_check(
+                    "Data Freshness",
+                    True,
+                    f"Latest: {age_days} days ago"
+                )
+            else:
+                self.add_check("Data Freshness", True, "No data")
+            
+            return True
+            
+        except Exception as e:
+            self.add_check("Data Freshness", False, str(e))
+            return False
+    
+    def check_backup_status(self) -> bool:
+        """Check backup file status"""
+        self.log("Checking backup status...")
+        
+        try:
+            backup_dir = os.path.dirname(self.db_path)
+            backup_files = [
+                f for f in os.listdir(backup_dir)
+                if f.startswith(os.path.basename(self.db_path)) and 'backup' in f
+            ]
+            
+            if backup_files:
+                latest_backup = max(backup_files)
+                self.log(f"Latest backup: {latest_backup}", "INFO")
+                self.add_check("Backup Status", True, f"Found {len(backup_files)} backups")
+            else:
+                self.add_warning("No backup files found")
+                self.add_check("Backup Status", True, "No backups")
+            
+            return True
+            
+        except Exception as e:
+            self.add_check("Backup Status", False, str(e))
+            return False
+    
+    def run_all_checks(self) -> bool:
+        """Run all health checks"""
+        print("\n" + "=" * 60)
+        print("SYSTEM HEALTH CHECK")
+        print("=" * 60 + "\n")
+        
+        checks = [
+            self.check_database_connectivity,
+            self.check_database_schema,
+            self.check_database_size,
+            self.check_memory_usage,
+            self.check_disk_space,
+            self.check_data_freshness,
+            self.check_backup_status
+        ]
+        
+        for check in checks:
+            check()
+        
+        return len(self.errors) == 0
