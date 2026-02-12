@@ -101,3 +101,141 @@ START: New User Signup
 └──────────────────────────┘
    ↓
 END: User Created (Pending Verification)
+Transaction Authorization Flow
+START: Transaction Request
+   ↓
+┌──────────────────────────┐
+│ Validate Transaction     │
+│ - Amount                 │
+│ - Account balance        │
+│ - Merchant valid         │
+└──────────────────────────┘
+   ↓
+   ├─ Invalid? → Reject immediately
+   ↓
+┌──────────────────────────┐
+│ Fraud Detection Check    │
+│ - Unusual pattern?       │
+│ - Location mismatch?     │
+│ - Velocity check?        │
+│ - Merchant risk?         │
+└──────────────────────────┘
+   ↓
+   ├─ High Risk (Score > 90)? → Block + Alert user
+   ├─ Medium Risk (50-90)? → 2FA Required
+   ├─ Low Risk (< 50)? → Continue
+   ↓
+┌──────────────────────────┐
+│ Check Amount Threshold   │
+└──────────────────────────┘
+   ↓
+   ├─ Amount > $10,000? → Require manual approval
+   ├─ Amount > $5,000? → Enhanced verification
+   ├─ Amount ≤ $5,000? → Auto-process
+   ↓
+┌──────────────────────────┐
+│ Check Available Balance  │
+└──────────────────────────┘
+   ↓
+   ├─ Insufficient? → Reject "Insufficient funds"
+   ↓
+┌──────────────────────────┐
+│ Apply Business Rules     │
+│ - Daily limit check      │
+│ - Monthly limit check    │
+│ - Category restrictions  │
+└──────────────────────────┘
+   ↓
+   ├─ Limit exceeded? → Reject with reason
+   ↓
+┌──────────────────────────┐
+│ Authorization Decision   │
+└──────────────────────────┘
+   ↓
+   ├─ APPROVED → Process transaction
+   ├─ DECLINED → Notify user with reason
+   ├─ PENDING → Queue for manual review
+   ↓
+END: Transaction Complete
+Content Moderation Flow
+START: Content Submitted
+   ↓
+┌──────────────────────────┐
+│ Automated Scan           │
+│ - Profanity filter       │
+│ - Image recognition      │
+│ - Link safety check      │
+│ - Text sentiment         │
+└──────────────────────────┘
+   ↓
+   ├─ Clear violation? → Auto-reject + reason
+   ↓
+┌──────────────────────────┐
+│ Machine Learning Model   │
+│ Confidence: 0-100%       │
+└──────────────────────────┘
+   ↓
+   ├─ Confidence > 95% (Safe)? → Auto-approve
+   ├─ Confidence > 95% (Unsafe)? → Auto-reject
+   ├─ Confidence 70-95%? → Human review queue
+   ├─ Confidence < 70%? → Senior moderator review
+   ↓
+┌──────────────────────────┐
+│ Human Review             │
+│ (if applicable)          │
+└──────────────────────────┘
+   ↓
+   ├─ Moderator approves? → Publish content
+   ├─ Moderator rejects? → Reject + feedback
+   ├─ Uncertain? → Escalate to senior
+   ↓
+┌──────────────────────────┐
+│ Update Model Feedback    │
+│ (Continuous Learning)    │
+└──────────────────────────┘
+   ↓
+END: Content Decision Final
+Customer Support Routing Flow
+START: Support Ticket Created
+   ↓
+┌──────────────────────────┐
+│ Classify Issue Type      │
+│ (NLP-based)              │
+│ - Technical              │
+│ - Billing                │
+│ - Account                │
+│ - General inquiry        │
+└──────────────────────────┘
+   ↓
+┌──────────────────────────┐
+│ Assess Urgency           │
+│ - Keywords (urgent, asap)│
+│ - Customer tier          │
+│ - Issue history          │
+└──────────────────────────┘
+   ↓
+   ├─ CRITICAL? → Priority 1 (Immediate)
+   ├─ HIGH? → Priority 2 (< 2 hours)
+   ├─ MEDIUM? → Priority 3 (< 24 hours)
+   ├─ LOW? → Priority 4 (< 48 hours)
+   ↓
+┌──────────────────────────┐
+│ Check for Auto-response  │
+│ - FAQ match?             │
+│ - Simple query?          │
+└──────────────────────────┘
+   ↓
+   ├─ Can auto-resolve? → Send automated response + Close
+   ↓
+┌──────────────────────────┐
+│ Route to Agent           │
+│ - Skill matching         │
+│ - Workload balancing     │
+│ - Language preference    │
+└──────────────────────────┘
+   ↓
+┌──────────────────────────┐
+│ Agent Assignment         │
+└──────────────────────────┘
+   ↓
+END: Ticket Assigned
