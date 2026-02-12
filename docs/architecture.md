@@ -101,3 +101,65 @@ Event-Driven Communication
 Message Broker: RabbitMQ/Kafka for asynchronous messaging
 Event Sourcing: Event store for audit trails
 CQRS: Separate read and write models for scalability
+Data Architecture
+Primary Database
+
+Type: PostgreSQL (relational)
+Purpose: Transactional data
+Scaling: Read replicas, connection pooling
+Backup: Automated daily backups with point-in-time recovery
+
+Secondary Storage
+
+Type: MongoDB (document store)
+Purpose: Semi-structured data, logs
+Scaling: Sharding and replication
+
+Cache Layer
+
+Type: Redis
+Purpose: Session storage, query caching
+Pattern: Cache-aside with TTL
+
+Data Flow
+Request Processing Flow
+1. Client Request
+   ↓
+2. API Gateway (Authentication, Rate Limiting)
+   ↓
+3. Load Balancer (Route to Service)
+   ↓
+4. Service Layer (Business Logic)
+   ↓
+5. Data Access Layer (Database/Cache)
+   ↓
+6. Response Processing
+   ↓
+7. Client Response
+Event Processing Flow
+1. Event Trigger
+   ↓
+2. Event Publisher (Service A)
+   ↓
+3. Message Queue (RabbitMQ/Kafka)
+   ↓
+4. Event Consumers (Services B, C, D)
+   ↓
+5. Processing & Side Effects
+   ↓
+6. Event Store (Audit Log)
+Security Architecture
+Defense in Depth
+
+Network security (VPC, Security Groups)
+Application security (Input validation, CSRF protection)
+Data security (Encryption at rest and in transit)
+Identity security (MFA, OAuth 2.0)
+
+Data Protection
+
+Encryption: AES-256 for data at rest, TLS 1.3 for data in transit
+Key Management: AWS KMS or HashiCorp Vault
+Secrets Management: Environment variables, secret stores
+PII Handling: Data masking, anonymization
+
