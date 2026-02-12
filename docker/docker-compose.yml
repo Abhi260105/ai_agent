@@ -277,4 +277,4 @@ volumes:
   pgadmin-data:
     driver: local
   elasticsearch-data:
-    driver: local
+    driver: localg
