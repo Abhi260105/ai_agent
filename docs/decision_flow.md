@@ -323,3 +323,80 @@ Human-readable reason codes
 Approval Workflows
 Standard Approval Matrix
 Decision TypeAmount/RiskApproverSLAExpense< $1,000Auto-approvedInstantExpense$1,000 - $5,000Manager24 hoursExpense$5,000 - $25,000Director48 hoursExpense> $25,000VP/CFO72 hoursRefund< $100Auto-approvedInstantRefund$100 - $1,000Support Lead4 hoursRefund> $1,000Finance Manager24 hours
+Multi-level Approval
+Requester submits
+   ↓
+Manager reviews (Level 1)
+   ├─ Rejected? → End (notify requester)
+   ├─ Approved? → Continue
+   ↓
+Director reviews (Level 2)
+   ├─ Rejected? → End (notify all)
+   ├─ Approved? → Continue
+   ↓
+Finance reviews (Level 3)
+   ├─ Rejected? → End (notify all)
+   ├─ Approved? → Execute & notify all
+Edge Case Handling
+Incomplete Data
+
+Action: Request additional information
+Timeout: 48 hours for user response
+Fallback: Reject with reason if timeout
+
+System Unavailable
+
+Action: Queue decision for retry
+Retry: Exponential backoff (1s, 2s, 4s, 8s, 16s)
+Max retries: 5
+Fallback: Manual review queue
+
+Conflicting Signals
+
+Action: Escalate to human review
+Priority: Set to high
+Data: Provide all conflicting signals
+Timeline: 4-hour SLA
+
+Audit and Compliance
+Decision Logging
+Every decision records:
+
+Timestamp
+Decision ID
+Input parameters
+Rules evaluated
+Model predictions (if ML)
+Final decision
+Decision maker (system/human)
+Execution result
+
+Compliance Requirements
+
+Data Retention: 7 years for financial decisions
+Right to Explanation: Provide reason for automated decisions
+Appeal Process: Users can contest decisions
+Bias Monitoring: Regular audits for fairness
+Access Logs: Track who accessed what data
+
+Performance Metrics
+Decision Quality
+
+Accuracy: % of correct decisions
+Precision: % of positive predictions that are correct
+Recall: % of actual positives correctly identified
+F1 Score: Harmonic mean of precision and recall
+
+Decision Speed
+
+P50 Latency: Median decision time
+P95 Latency: 95th percentile decision time
+P99 Latency: 99th percentile decision time
+Timeout Rate: % of decisions exceeding SLA
+
+Business Impact
+
+False Positive Rate: Incorrectly blocked legitimate actions
+False Negative Rate: Incorrectly approved problematic actions
+Override Rate: % of automated decisions manually overridden
+Appeal Success Rate: % of appealed decisions reversed
