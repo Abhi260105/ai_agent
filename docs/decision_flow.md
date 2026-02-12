@@ -239,3 +239,87 @@ START: Support Ticket Created
 └──────────────────────────┘
    ↓
 END: Ticket Assigned
+Decision Rules Engine
+Rule Structure
+json{
+  "rule_id": "RULE_001",
+  "name": "High-value transaction approval",
+  "conditions": [
+    {
+      "field": "transaction.amount",
+      "operator": "greater_than",
+      "value": 10000
+    },
+    {
+      "field": "user.account_age_days",
+      "operator": "less_than",
+      "value": 30
+    }
+  ],
+  "logic": "AND",
+  "action": "require_manual_approval",
+  "priority": 1
+}
+Rule Evaluation Order
+
+Safety Rules (Priority 0): Security, compliance, legal
+Business Critical Rules (Priority 1): Revenue, risk management
+Operational Rules (Priority 2): Efficiency, user experience
+Optional Rules (Priority 3): Nice-to-have, experimental
+
+Conflict Resolution
+When multiple rules apply:
+
+Higher priority rule wins
+If same priority, most restrictive action wins
+If still tied, newest rule wins
+Log conflict for review
+
+Machine Learning Decision Models
+Model Types in Use
+1. Classification Models
+
+Use: Fraud detection, content moderation
+Algorithm: Random Forest, Neural Networks
+Output: Probability score + confidence interval
+Threshold: Configurable per use case
+
+2. Regression Models
+
+Use: Risk scoring, pricing optimization
+Algorithm: Gradient Boosting, Linear Regression
+Output: Numerical score
+Range: Normalized 0-100 or 0-1
+
+3. Anomaly Detection
+
+Use: Unusual pattern detection
+Algorithm: Isolation Forest, Autoencoders
+Output: Anomaly score
+Action: Flag for review if score exceeds threshold
+
+Model Governance
+Training
+
+Minimum dataset size: 10,000 samples
+Train/test split: 80/20
+Cross-validation: 5-fold
+Re-training frequency: Monthly or when drift detected
+
+Monitoring
+
+Prediction accuracy tracking
+Concept drift detection
+Performance degradation alerts
+A/B testing for model updates
+
+Explainability
+
+Feature importance scores
+SHAP values for individual predictions
+Decision audit trail
+Human-readable reason codes
+
+Approval Workflows
+Standard Approval Matrix
+Decision TypeAmount/RiskApproverSLAExpense< $1,000Auto-approvedInstantExpense$1,000 - $5,000Manager24 hoursExpense$5,000 - $25,000Director48 hoursExpense> $25,000VP/CFO72 hoursRefund< $100Auto-approvedInstantRefund$100 - $1,000Support Lead4 hoursRefund> $1,000Finance Manager24 hours
