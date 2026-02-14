@@ -68,3 +68,40 @@ Concurrent Sessions: 1 million simultaneous active users
 User Roles: Maximum 50 custom roles
 Permissions: 200 distinct permissions
 Group Membership: User can belong to max 100 groups
+Data Processing
+
+Batch Processing: Maximum 1 million records per batch job
+Real-time Processing: Limited to events < 10KB
+Data Export: Maximum 500,000 rows per export
+Import Size: Maximum 50MB CSV file
+Processing Time: Batch jobs timeout after 6 hours
+
+Search Functionality
+
+Index Size: 50 million documents
+Search Results: Maximum 1,000 results returned
+Query Complexity: Maximum 10 search terms with 5 filters
+Search Latency: Degrades with more than 3 concurrent searches per user
+Full-text Search: Limited to English, Spanish, French, German
+
+Integration Limitations
+API Constraints
+
+API Version Support: Last 3 major versions only
+Deprecation Notice: 6 months before version sunset
+Webhook Retries: Maximum 5 retries with exponential backoff
+Webhook Timeout: 10 seconds per request
+Webhook Payload: Maximum 1MB
+
+Third-party Integrations
+
+OAuth Providers: Limited to Google, Microsoft, GitHub, Facebook
+Payment Gateways: Stripe and PayPal only
+Email Services: SendGrid and AWS SES
+SMS Providers: Twilio only
+Cloud Storage: AWS S3 and Google Cloud Storage only
+Analytics: Google Analytics and Mixpanel
+
+
+Last Updated: February 11, 2026
+Document Version: 1.2.0
