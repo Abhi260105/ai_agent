@@ -272,3 +272,201 @@ pythonclass MyTool(BaseTool):
         missing = [k for k in required if k not in self.config]
         if missing:
             raise ValueError(f"Missing config: {', '.join(missing)}")
+3. Logging
+pythonimport logging
+
+logger = logging.getLogger(__name__)
+
+class MyTool(BaseTool):
+    def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        logger.info(f"Executing {self.name} with input: {input_data.keys()}")
+        
+        try:
+            result = self._process(input_data)
+            logger.info(f"Execution successful")
+            return result
+        except Exception as e:
+            logger.error(f"Execution failed: {str(e)}", exc_info=True)
+            raise
+4. Input Validation
+pythonfrom pydantic import BaseModel, validator
+
+class EmailInput(BaseModel):
+    to: str
+    subject: str
+    body: str
+    
+    @validator('to')
+    def validate_email(cls, v):
+        import re
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', v):
+            raise ValueError('Invalid email address')
+        return v
+
+class EmailSenderTool(BaseTool):
+    def validate_input(self, input_data: Dict[str, Any]) -> bool:
+        try:
+            EmailInput(**input_data)
+            return True
+        except Exception:
+            return False
+Advanced Features
+Async Support
+pythonimport asyncio
+from typing import Dict, Any
+
+class AsyncTool(BaseTool):
+    async def execute_async(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Asynchronous execution method.
+        """
+        await asyncio.sleep(1)  # Simulate async operation
+        return {'success': True}
+    
+    def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Synchronous wrapper.
+        """
+        return asyncio.run(self.execute_async(input_data))
+Streaming Results
+pythonfrom typing import Iterator
+
+class StreamingTool(BaseTool):
+    def execute_stream(self, input_data: Dict[str, Any]) -> Iterator[Dict[str, Any]]:
+        """
+        Stream results as they become available.
+        """
+        for i in range(10):
+            yield {'chunk': i, 'data': f'Item {i}'}
+            time.sleep(0.1)
+Caching
+pythonfrom functools import lru_cache
+import hashlib
+import json
+
+class CachedTool(BaseTool):
+    @lru_cache(maxsize=100)
+    def execute(self, input_hash: str) -> Dict[str, Any]:
+        """
+        Cached execution.
+        """
+        # Actual execution logic
+        return self._execute_uncached(json.loads(input_hash))
+    
+    def _execute_uncached(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        # Real processing
+        pass
+    
+    def execute_with_cache(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        input_hash = hashlib.md5(
+            json.dumps(input_data, sort_keys=True).encode()
+        ).hexdigest()
+        return self.execute(input_hash)
+Testing Tools
+Unit Tests
+pythonimport pytest
+from unittest.mock import Mock, patch
+
+def test_tool_execution(tool):
+    """Test successful execution."""
+    input_data = {'param': 'value'}
+    result = tool.execute(input_data)
+    assert result['success'] is True
+
+def test_tool_validation(tool):
+    """Test input validation."""
+    assert tool.validate_input({'required': 'value'}) is True
+    assert tool.validate_input({}) is False
+
+def test_tool_error_handling(tool):
+    """Test error handling."""
+    with patch.object(tool, '_process', side_effect=Exception('Test error')):
+        result = tool.execute({'param': 'value'})
+        assert result['success'] is False
+        assert 'error' in result
+Integration Tests
+python@pytest.mark.integration
+def test_tool_integration():
+    """Test tool with real dependencies."""
+    config = load_test_config()
+    tool = MyTool(config)
+    
+    input_data = create_test_input()
+    result = tool.execute(input_data)
+    
+    assert result['success'] is True
+    verify_side_effects()
+Deployment
+1. Version Control
+tool_name/
+├── CHANGELOG.md          # Version history
+├── VERSION              # Current version
+└── migrations/          # Schema migrations
+2. Documentation
+markdown# Tool Name
+
+## Description
+Brief description of what the tool does.
+
+## Installation
+\`\`\`bash
+pip install tool-requirements
+\`\`\`
+
+## Configuration
+Required and optional configuration parameters.
+
+## Usage
+\`\`\`python
+tool = ToolName(config)
+result = tool.execute(input_data)
+\`\`\`
+
+## Examples
+Real-world usage examples.
+
+## API Reference
+Detailed API documentation.
+3. Monitoring
+pythonfrom prometheus_client import Counter, Histogram
+
+execution_counter = Counter(
+    'tool_executions_total',
+    'Total tool executions',
+    ['tool_name', 'status']
+)
+
+execution_duration = Histogram(
+    'tool_execution_duration_seconds',
+    'Tool execution duration',
+    ['tool_name']
+)
+
+class MonitoredTool(BaseTool):
+    def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        with execution_duration.labels(tool_name=self.name).time():
+            result = super().execute(input_data)
+            status = 'success' if result['success'] else 'error'
+            execution_counter.labels(
+                tool_name=self.name,
+                status=status
+            ).inc()
+            return result
+Tool Marketplace
+Publishing Tools
+
+Create tool package
+Write comprehensive documentation
+Add example usage
+Submit for review
+Publish to registry
+
+Using Third-party Tools
+pythonfrom tools.registry import install_tool, load_tool
+
+# Install from registry
+install_tool('community/amazing-tool')
+
+# Load and use
+tool = load_tool('amazing-tool', config)
+result = tool.execute(input_data)
