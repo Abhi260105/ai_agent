@@ -301,3 +301,41 @@ remaining = response.headers.get('X-RateLimit-Remaining')
 
 if int(remaining) < 10:
     alert("Low API quota remaining")
+
+Support and Resources
+Documentation
+
+API Reference: https://api.example.com/docs
+Guides: https://docs.example.com
+Changelog: https://api.example.com/changelog
+
+Community
+
+Forum: https://community.example.com
+Stack Overflow: Tag example-api
+GitHub: https://github.com/example/api-examples
+
+Support
+
+Email: api-support@example.com
+Response Time: 24 hours (business days)
+Premium Support: Available for enterprise customers
+
+Status Page
+Monitor API uptime and incidents:
+
+Status: https://status.example.com
+Subscribe: Get notifications for incidents
+
+Changelog
+Version 1.1.0 (2026-02-01)
+
+Added batch operations endpoint
+Improved error messages with detailed codes
+New webhook events for payment processing
+
+Version 1.0.0 (2024-01-15)
+
+Initial API release
+RESTful endpoints for core resources
+OAuth 2.0 authentication
