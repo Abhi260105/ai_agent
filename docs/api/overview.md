@@ -117,3 +117,83 @@ Less than: field_lt=value
 Range: field_gte=min&field_lte=max
 In list: field_in=value1,value2,value3
 Full-text search: q=search+terms
+Sorting
+httpGET /v1/users?sort=created_at:desc,name:asc
+Format: field:direction
+
+asc: Ascending order
+desc: Descending order
+
+Multiple fields separated by commas (applied in order).
+Field Selection
+Request only specific fields to reduce response size:
+httpGET /v1/users?fields=id,name,email
+Nested fields:
+httpGET /v1/users?fields=id,name,profile.avatar,profile.bio
+Data Types
+Standard Types
+TypeFormatExampleStringUTF-8 text"Hello World"Integer64-bit signed42Float64-bit double3.14159Booleantrue/falsetrueNullnullnullArrayOrdered list[1, 2, 3]ObjectKey-value pairs{"key": "value"}
+Special Formats
+TypeFormatExampleDateISO 8601 date"2026-02-11"DateTimeISO 8601 with timezone"2026-02-11T12:00:00Z"UUIDUUID v4"550e8400-e29b-41d4-a716-446655440000"EmailRFC 5322"user@example.com"URLRFC 3986"https://example.com"CurrencyISO 4217 code + amount{"amount": 1000, "currency": "USD"}
+Idempotency
+For POST, PUT, and PATCH requests, include an X-Idempotency-Key header to prevent duplicate operations:
+httpPOST /v1/payments
+X-Idempotency-Key: unique-key-123
+The API will return the same response for repeated requests with the same idempotency key within 24 hours.
+Webhooks
+Subscribe to events and receive real-time notifications:
+json{
+  "url": "https://your-app.com/webhooks",
+  "events": ["user.created", "payment.completed"],
+  "secret": "webhook_secret_key"
+}
+Webhook payloads include:
+json{
+  "id": "evt_123",
+  "type": "user.created",
+  "data": {
+    "id": "usr_456",
+    "name": "John Doe"
+  },
+  "created_at": "2026-02-11T12:00:00Z"
+}
+Verify webhook signatures:
+pythonimport hmac
+import hashlib
+
+def verify_webhook(payload, signature, secret):
+    expected = hmac.new(
+        secret.encode(),
+        payload.encode(),
+        hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
+Batch Operations
+Execute multiple operations in a single request:
+httpPOST /v1/batch
+json{
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/users",
+      "body": {"name": "User 1"}
+    },
+    {
+      "method": "GET",
+      "path": "/users/123"
+    }
+  ]
+}
+Response:
+json{
+  "results": [
+    {
+      "status": 201,
+      "body": {"id": "456", "name": "User 1"}
+    },
+    {
+      "status": 200,
+      "body": {"id": "123", "name": "Existing User"}
+    }
+  ]
+}
