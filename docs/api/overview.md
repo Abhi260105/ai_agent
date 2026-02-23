@@ -197,3 +197,107 @@ json{
     }
   ]
 }
+Testing
+Sandbox Environment
+Test your integration without affecting production data:
+Sandbox: https://api-sandbox.example.com/v1
+Test Credentials:
+
+API Key: test_sk_12345
+All operations are simulated
+Data resets every 24 hours
+
+Test Mode
+Toggle test mode with a header:
+httpX-Test-Mode: true
+SDKs and Libraries
+Official SDKs available for:
+Python
+bashpip install example-api-python
+pythonfrom example_api import Client
+
+client = Client(api_key='your_api_key')
+users = client.users.list(limit=10)
+JavaScript/Node.js
+bashnpm install example-api-js
+javascriptconst ExampleAPI = require('example-api-js');
+
+const client = new ExampleAPI('your_api_key');
+const users = await client.users.list({ limit: 10 });
+Ruby
+bashgem install example-api
+rubyrequire 'example_api'
+
+client = ExampleAPI::Client.new(api_key: 'your_api_key')
+users = client.users.list(limit: 10)
+Go
+bashgo get github.com/example/api-go
+goimport "github.com/example/api-go"
+
+client := api.NewClient("your_api_key")
+users, _ := client.Users.List(&api.ListOptions{Limit: 10})
+Best Practices
+1. Use HTTPS
+Always use HTTPS in production. HTTP is only supported in development.
+2. Store API Keys Securely
+
+Never commit API keys to version control
+Use environment variables or secret management
+Rotate keys regularly
+
+3. Handle Errors Gracefully
+pythontry:
+    response = client.users.create(data)
+except APIError as e:
+    if e.status_code == 429:
+        # Rate limited, wait and retry
+        time.sleep(60)
+        retry()
+    elif e.status_code >= 500:
+        # Server error, retry with backoff
+        retry_with_backoff()
+    else:
+        # Client error, log and handle
+        log_error(e)
+4. Implement Exponential Backoff
+pythondef retry_with_backoff(func, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except Exception:
+            if attempt == max_retries - 1:
+                raise
+            wait = 2 ** attempt
+            time.sleep(wait)
+5. Use Pagination
+Don't fetch all records at once:
+pythoncursor = None
+all_users = []
+
+while True:
+    response = client.users.list(limit=100, cursor=cursor)
+    all_users.extend(response.data)
+    
+    if not response.pagination.has_more:
+        break
+    
+    cursor = response.pagination.next_cursor
+6. Cache Responses
+Implement client-side caching for frequently accessed data:
+pythonfrom functools import lru_cache
+from datetime import datetime, timedelta
+
+@lru_cache(maxsize=128)
+def get_user_cached(user_id, cache_key):
+    return client.users.get(user_id)
+
+# Invalidate cache every 5 minutes
+cache_key = datetime.now().timestamp() // 300
+user = get_user_cached('123', cache_key)
+7. Monitor Usage
+Track your API usage to avoid rate limits:
+pythonresponse = client.users.list()
+remaining = response.headers.get('X-RateLimit-Remaining')
+
+if int(remaining) < 10:
+    alert("Low API quota remaining")
