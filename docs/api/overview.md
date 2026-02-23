@@ -44,3 +44,76 @@ Accept: Preferred response format
 User-Agent: Client application identifier
 X-Request-ID: Unique request identifier for tracing
 X-Idempotency-Key: For idempotent operations
+Response Format
+Standard Response Structure
+Success Response
+json{
+  "status": "success",
+  "data": {
+    "id": "123",
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "metadata": {
+    "timestamp": "2026-02-11T12:00:00Z",
+    "request_id": "req_abc123"
+  }
+}
+Error Response
+json{
+  "status": "error",
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "The email address is invalid",
+    "details": {
+      "field": "email",
+      "value": "invalid-email"
+    }
+  },
+  "metadata": {
+    "timestamp": "2026-02-11T12:00:00Z",
+    "request_id": "req_abc123"
+  }
+}
+HTTP Status Codes
+Success Codes (2xx)
+CodeDescriptionUsage200OKSuccessful GET, PUT, PATCH, DELETE201CreatedSuccessful POST creating new resource202AcceptedRequest accepted, processing asynchronously204No ContentSuccessful DELETE with no response body
+Client Error Codes (4xx)
+CodeDescriptionCommon Causes400Bad RequestInvalid JSON, missing required fields401UnauthorizedMissing or invalid authentication403ForbiddenInsufficient permissions404Not FoundResource doesn't exist409ConflictResource already exists, version conflict422Unprocessable EntityValidation errors429Too Many RequestsRate limit exceeded
+Server Error Codes (5xx)
+CodeDescriptionAction500Internal Server ErrorContact support502Bad GatewayRetry after delay503Service UnavailableService temporarily down504Gateway TimeoutRequest took too long
+Pagination
+For endpoints returning lists, we use cursor-based pagination:
+Request
+httpGET /v1/users?limit=50&cursor=eyJpZCI6MTIzfQ
+Parameters:
+
+limit: Number of items per page (default: 50, max: 100)
+cursor: Pagination cursor from previous response
+
+Response
+json{
+  "status": "success",
+  "data": [
+    {"id": "1", "name": "User 1"},
+    {"id": "2", "name": "User 2"}
+  ],
+  "pagination": {
+    "limit": 50,
+    "has_more": true,
+    "next_cursor": "eyJpZCI6NTB9",
+    "total": 1250
+  }
+}
+Filtering and Sorting
+Filtering
+Use query parameters to filter results:
+httpGET /v1/users?status=active&role=admin&created_after=2026-01-01
+Common Filters:
+
+Equality: field=value
+Greater than: field_gt=value
+Less than: field_lt=value
+Range: field_gte=min&field_lte=max
+In list: field_in=value1,value2,value3
+Full-text search: q=search+terms
