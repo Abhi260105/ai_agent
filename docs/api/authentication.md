@@ -298,3 +298,124 @@ json{
     }
   }
 }
+403 Forbidden
+Insufficient Permissions:
+json{
+  "status": "error",
+  "error": {
+    "code": "INSUFFICIENT_PERMISSIONS",
+    "message": "Your API key does not have permission to perform this action",
+    "details": {
+      "required_scope": "users:write",
+      "available_scopes": ["users:read"]
+    }
+  }
+}
+Testing Authentication
+Test API Keys
+Use test API keys in development:
+python# Test environment
+test_key = "sk_test_abc123xyz789"
+
+# Production environment
+prod_key = "sk_live_abc123xyz789"
+
+# Automatically select based on environment
+api_key = test_key if os.environ.get('ENV') == 'test' else prod_key
+OAuth Playground
+Test OAuth flow interactively:
+https://api.example.com/oauth/playground
+cURL Examples
+Test API Key:
+bashcurl -i https://api.example.com/v1/auth/test \
+  -H "Authorization: Bearer sk_test_abc123xyz789"
+Test OAuth Token:
+bashcurl -i https://api.example.com/v1/auth/test \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+Code Examples
+Complete OAuth Implementation (Python)
+pythonfrom flask import Flask, redirect, request, session
+import requests
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+CLIENT_ID = 'your-client-id'
+CLIENT_SECRET = 'your-client-secret'
+REDIRECT_URI = 'http://localhost:5000/callback'
+AUTH_URL = 'https://api.example.com/oauth/authorize'
+TOKEN_URL = 'https://api.example.com/oauth/token'
+
+@app.route('/login')
+def login():
+    auth_url = f"{AUTH_URL}?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=users:read"
+    return redirect(auth_url)
+
+@app.route('/callback')
+def callback():
+    code = request.args.get('code')
+    
+    # Exchange code for token
+    response = requests.post(TOKEN_URL, data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'redirect_uri': REDIRECT_URI
+    })
+    
+    token_data = response.json()
+    session['access_token'] = token_data['access_token']
+    
+    return 'Logged in successfully!'
+
+@app.route('/api/users')
+def get_users():
+    headers = {
+        'Authorization': f"Bearer {session['access_token']}"
+    }
+    response = requests.get('https://api.example.com/v1/users', headers=headers)
+    return response.json()
+Token Refresh Implementation (JavaScript)
+javascriptclass APIClient {
+  constructor(clientId, clientSecret) {
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.accessToken = null;
+    this.refreshToken = null;
+    this.tokenExpiry = null;
+  }
+
+  async refreshAccessToken() {
+    const response = await fetch('https://api.example.com/oauth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: this.refreshToken,
+        client_id: this.clientId,
+        client_secret: this.clientSecret
+      })
+    });
+
+    const data = await response.json();
+    this.accessToken = data.access_token;
+    this.refreshToken = data.refresh_token;
+    this.tokenExpiry = Date.now() + (data.expires_in * 1000);
+  }
+
+  async request(endpoint, options = {}) {
+    // Refresh token if expired or expiring soon
+    if (Date.now() >= this.tokenExpiry - 60000) {
+      await this.refreshAccessToken();
+    }
+
+    return fetch(`https://api.example.com/v1${endpoint}`, {
+      ...options,
+      headers: {
+        ...options.headers,
+        'Authorization': `Bearer ${this.accessToken}`
+      }
+    });
+  }
+}
