@@ -221,3 +221,80 @@ import boto3
 client = boto3.client('secretsmanager')
 response = client.get_secret_value(SecretId='api-key')
 api_key = response['SecretString']
+2. Use HTTPS Only
+Always use HTTPS in production:
+python# Enforce HTTPS
+if not request.is_secure():
+    return redirect(request.url.replace('http://', 'https://'))
+3. Implement Rate Limiting
+Protect your application from abuse:
+pythonfrom flask_limiter import Limiter
+
+limiter = Limiter(
+    key_func=lambda: request.headers.get('Authorization'),
+    default_limits=["1000 per hour"]
+)
+4. Validate Tokens
+Always validate tokens on the server:
+pythonimport jwt
+
+def validate_token(token):
+    try:
+        payload = jwt.decode(
+            token,
+            'your-secret-key',
+            algorithms=['HS256']
+        )
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None  # Token expired
+    except jwt.InvalidTokenError:
+        return None  # Invalid token
+5. Use Scoped Permissions
+Request only necessary scopes:
+python# ❌ Don't request all permissions
+scopes = "users:read users:write users:delete admin:write"
+
+# ✅ Request minimum required
+scopes = "users:read"
+6. Monitor Authentication Events
+Log all authentication attempts:
+pythonimport logging
+
+logger.info(f"Authentication attempt: user={user_id}, ip={ip_address}, status={status}")
+7. Implement Token Refresh
+Refresh tokens before expiration:
+pythondef get_valid_token():
+    if token_expires_in < 300:  # Less than 5 minutes
+        token = refresh_access_token()
+    return token
+Error Responses
+Authentication Errors
+401 Unauthorized
+Missing Token:
+json{
+  "status": "error",
+  "error": {
+    "code": "MISSING_AUTH",
+    "message": "No authentication token provided"
+  }
+}
+Invalid Token:
+json{
+  "status": "error",
+  "error": {
+    "code": "INVALID_TOKEN",
+    "message": "The provided token is invalid or expired"
+  }
+}
+Expired Token:
+json{
+  "status": "error",
+  "error": {
+    "code": "TOKEN_EXPIRED",
+    "message": "Token has expired",
+    "details": {
+      "expired_at": "2026-02-11T12:00:00Z"
+    }
+  }
+}
