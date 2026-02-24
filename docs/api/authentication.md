@@ -133,3 +133,91 @@ Token Structure
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
 eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
 SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+Components:
+
+Header: Algorithm and token type
+Payload: Claims (user data)
+Signature: Verification signature
+
+Creating JWT Tokens
+Python Example:
+pythonimport jwt
+import datetime
+
+payload = {
+    'sub': 'user_123',  # Subject (user ID)
+    'name': 'John Doe',
+    'iat': datetime.datetime.utcnow(),  # Issued at
+    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Expires
+}
+
+token = jwt.encode(payload, 'your-secret-key', algorithm='HS256')
+Node.js Example:
+javascriptconst jwt = require('jsonwebtoken');
+
+const payload = {
+  sub: 'user_123',
+  name: 'John Doe',
+  iat: Math.floor(Date.now() / 1000),
+  exp: Math.floor(Date.now() / 1000) + (60 * 60)
+};
+
+const token = jwt.sign(payload, 'your-secret-key');
+Using JWT Tokens
+httpGET /v1/users/me HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+4. Basic Authentication (Legacy)
+Not recommended for production. Use for testing only.
+httpGET /v1/users HTTP/1.1
+Host: api.example.com
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+The value after Basic is base64-encoded username:password.
+Example (cURL):
+bashcurl https://api.example.com/v1/users \
+  -u username:password
+Token Management
+Token Expiration
+Token TypeLifetimeRenewableAPI KeyNo expirationNoOAuth Access Token1 hourYes (via refresh)OAuth Refresh Token30 daysYesJWTConfigurableNo (issue new)
+Revoking Tokens
+Revoke API Key
+httpDELETE /v1/api-keys/{key_id} HTTP/1.1
+Host: api.example.com
+Authorization: Bearer ADMIN_API_KEY
+Revoke OAuth Token
+httpPOST /oauth/revoke HTTP/1.1
+Host: api.example.com
+Content-Type: application/x-www-form-urlencoded
+
+token=ACCESS_TOKEN&
+token_type_hint=access_token&
+client_id=YOUR_CLIENT_ID&
+client_secret=YOUR_CLIENT_SECRET
+Rotating API Keys
+Best practice: Rotate keys every 90 days
+python# 1. Create new API key
+new_key = client.api_keys.create(name="Production Key v2")
+
+# 2. Update your application to use new key
+update_env_variable('API_KEY', new_key.key)
+
+# 3. Monitor for 24 hours
+
+# 4. Delete old key
+client.api_keys.delete(old_key_id)
+Security Best Practices
+1. Store Credentials Securely
+❌ Don't:
+python# Hard-coded credentials
+api_key = "sk_live_abc123xyz789"
+✅ Do:
+python# Use environment variables
+import os
+api_key = os.environ.get('API_KEY')
+✅ Do (using secrets manager):
+python# AWS Secrets Manager
+import boto3
+
+client = boto3.client('secretsmanager')
+response = client.get_secret_value(SecretId='api-key')
+api_key = response['SecretString']
