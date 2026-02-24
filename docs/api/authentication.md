@@ -63,3 +63,73 @@ client_id: Your OAuth application ID
 redirect_uri: URL to redirect after authorization
 scope: Space-separated list of permissions
 state: Random string for CSRF protection
+Step 2: User Authorization
+User logs in and approves your application's access request.
+Step 3: Authorization Code
+User is redirected to your redirect_uri:
+https://yourapp.com/callback?code=AUTH_CODE&state=random_string
+Step 4: Exchange Code for Token
+httpPOST /oauth/token HTTP/1.1
+Host: api.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&
+code=AUTH_CODE&
+client_id=YOUR_CLIENT_ID&
+client_secret=YOUR_CLIENT_SECRET&
+redirect_uri=https://yourapp.com/callback
+Response:
+json{
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
+  "scope": "users:read users:write"
+}
+Step 5: Use Access Token
+httpGET /v1/users/me HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+Client Credentials Flow (Machine-to-Machine)
+For server-side applications without user interaction:
+httpPOST /oauth/token HTTP/1.1
+Host: api.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&
+client_id=YOUR_CLIENT_ID&
+client_secret=YOUR_CLIENT_SECRET&
+scope=api:access
+Response:
+json{
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+Refresh Token Flow
+When access token expires, use refresh token:
+httpPOST /oauth/token HTTP/1.1
+Host: api.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&
+refresh_token=REFRESH_TOKEN&
+client_id=YOUR_CLIENT_ID&
+client_secret=YOUR_CLIENT_SECRET
+Response:
+json{
+  "access_token": "NEW_ACCESS_TOKEN",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "NEW_REFRESH_TOKEN"
+}
+OAuth Scopes
+ScopeDescriptionusers:readRead user informationusers:writeCreate and update usersusers:deleteDelete userspayments:readRead payment informationpayments:writeProcess paymentsadmin:readRead admin dataadmin:writePerform admin actions
+Requesting Multiple Scopes:
+scope=users:read users:write payments:read
+3. JWT (JSON Web Tokens)
+For custom authentication systems, use JWT tokens.
+Token Structure
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
