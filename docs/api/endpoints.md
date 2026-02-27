@@ -552,3 +552,12 @@ json{
     }
   ]
 }
+Limitations:
+
+Maximum 100 operations per batch request
+Each operation is independent (failure doesn't affect others)
+Batch requests count toward rate limits for each operation
+
+
+Common Response Codes
+CodeStatusDescription200OKRequest successful201CreatedResource created202AcceptedRequest accepted, processing async204No ContentSuccessful deletion400Bad RequestInvalid request format401UnauthorizedAuthentication required403ForbiddenInsufficient permissions404Not FoundResource not found409ConflictResource conflict422Unprocessable EntityValidation failed429Too Many RequestsRate limit exceeded500Internal Server ErrorServer error503Service UnavailableService down
