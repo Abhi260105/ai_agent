@@ -213,3 +213,171 @@ json{
     "created_at": "2025-06-01T00:00:00Z"
   }
 }
+Create Organization
+Create a new organization.
+httpPOST /v1/organizations
+Request Body:
+json{
+  "name": "Startup Inc",
+  "slug": "startup-inc",
+  "plan": "pro"
+}
+Response: 201 Created
+List Organization Members
+List members of an organization.
+httpGET /v1/organizations/{org_id}/members
+Response: 200 OK
+json{
+  "status": "success",
+  "data": [
+    {
+      "user_id": "usr_abc123",
+      "email": "john@acme.com",
+      "name": "John Doe",
+      "role": "admin",
+      "joined_at": "2025-06-01T00:00:00Z"
+    }
+  ]
+}
+
+Projects
+List Projects
+Retrieve projects within an organization.
+httpGET /v1/organizations/{org_id}/projects
+Query Parameters:
+ParameterTypeDescriptionstatusstringFilter: active, archivedsortstringSort: created_at:desc, name:asc
+Response: 200 OK
+json{
+  "status": "success",
+  "data": [
+    {
+      "id": "prj_abc123",
+      "name": "Website Redesign",
+      "description": "Q2 2026 website refresh",
+      "status": "active",
+      "owner_id": "usr_def456",
+      "team_size": 8,
+      "created_at": "2026-01-10T00:00:00Z"
+    }
+  ]
+}
+Create Project
+Create a new project.
+httpPOST /v1/organizations/{org_id}/projects
+Request Body:
+json{
+  "name": "Mobile App v2",
+  "description": "Next generation mobile application",
+  "settings": {
+    "visibility": "private",
+    "enable_notifications": true
+  }
+}
+Response: 201 Created
+Get Project
+Retrieve project details.
+httpGET /v1/projects/{project_id}
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "id": "prj_abc123",
+    "name": "Website Redesign",
+    "description": "Q2 2026 website refresh",
+    "status": "active",
+    "organization_id": "org_abc123",
+    "owner": {
+      "id": "usr_def456",
+      "name": "Jane Doe"
+    },
+    "stats": {
+      "tasks": 45,
+      "completed": 32,
+      "in_progress": 10,
+      "blocked": 3
+    },
+    "created_at": "2026-01-10T00:00:00Z",
+    "updated_at": "2026-02-11T10:00:00Z"
+  }
+}
+
+Tasks
+List Tasks
+Retrieve tasks within a project.
+httpGET /v1/projects/{project_id}/tasks
+Query Parameters:
+ParameterTypeDescriptionstatusstringtodo, in_progress, doneassignee_idstringFilter by assigneeprioritystringlow, medium, high, urgentdue_beforestringISO 8601 date
+Response: 200 OK
+json{
+  "status": "success",
+  "data": [
+    {
+      "id": "tsk_abc123",
+      "title": "Design homepage mockup",
+      "description": "Create high-fidelity mockup for homepage",
+      "status": "in_progress",
+      "priority": "high",
+      "assignee": {
+        "id": "usr_ghi789",
+        "name": "Alice Johnson"
+      },
+      "due_date": "2026-02-15",
+      "created_at": "2026-02-05T09:00:00Z"
+    }
+  ]
+}
+Create Task
+Create a new task.
+httpPOST /v1/projects/{project_id}/tasks
+Request Body:
+json{
+  "title": "Implement user authentication",
+  "description": "Add OAuth 2.0 authentication flow",
+  "priority": "high",
+  "assignee_id": "usr_ghi789",
+  "due_date": "2026-02-20",
+  "tags": ["backend", "security"]
+}
+Response: 201 Created
+Update Task
+Update task details or status.
+httpPATCH /v1/tasks/{task_id}
+Request Body:
+json{
+  "status": "done",
+  "completed_at": "2026-02-11T15:00:00Z"
+}
+Response: 200 OK
+
+Files
+Upload File
+Upload a file to a project.
+httpPOST /v1/projects/{project_id}/files
+Content-Type: multipart/form-data
+Form Data:
+FieldTypeRequiredDescriptionfilefileYesFile to uploadnamestringNoCustom filenamefolderstringNoFolder path
+Response: 201 Created
+json{
+  "status": "success",
+  "data": {
+    "id": "fil_abc123",
+    "name": "design-mockup.png",
+    "size": 2048576,
+    "mime_type": "image/png",
+    "url": "https://cdn.example.com/files/design-mockup.png",
+    "thumbnail_url": "https://cdn.example.com/thumbnails/design-mockup.png",
+    "uploaded_by": "usr_def456",
+    "created_at": "2026-02-11T12:00:00Z"
+  }
+}
+List Files
+List files in a project.
+httpGET /v1/projects/{project_id}/files
+Query Parameters:
+ParameterTypeDescriptionfolderstringFilter by folder pathmime_typestringFilter by MIME typeuploaded_afterstringISO 8601 date filter
+Response: 200 OK
+Download File
+Download a file.
+httpGET /v1/files/{file_id}/download
+Response: 200 OK
+Returns the file content with appropriate Content-Type and Content-Disposition headers.
