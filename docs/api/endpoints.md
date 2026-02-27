@@ -381,3 +381,174 @@ Download a file.
 httpGET /v1/files/{file_id}/download
 Response: 200 OK
 Returns the file content with appropriate Content-Type and Content-Disposition headers.
+Delete File
+Delete a file.
+httpDELETE /v1/files/{file_id}
+Response: 204 No Content
+
+Webhooks
+List Webhooks
+List configured webhooks.
+httpGET /v1/webhooks
+Response: 200 OK
+json{
+  "status": "success",
+  "data": [
+    {
+      "id": "whk_abc123",
+      "url": "https://yourapp.com/webhooks",
+      "events": ["user.created", "task.completed"],
+      "status": "active",
+      "created_at": "2026-01-15T00:00:00Z"
+    }
+  ]
+}
+Create Webhook
+Create a new webhook subscription.
+httpPOST /v1/webhooks
+Request Body:
+json{
+  "url": "https://yourapp.com/webhooks",
+  "events": ["user.created", "user.updated", "task.completed"],
+  "secret": "your_webhook_secret"
+}
+Available Events:
+
+user.created, user.updated, user.deleted
+organization.created, organization.updated
+project.created, project.updated, project.deleted
+task.created, task.updated, task.completed, task.deleted
+file.uploaded, file.deleted
+
+Response: 201 Created
+Test Webhook
+Send a test webhook event.
+httpPOST /v1/webhooks/{webhook_id}/test
+Response: 200 OK
+json{
+  "status": "success",
+  "message": "Test webhook sent successfully",
+  "response": {
+    "status_code": 200,
+    "latency_ms": 145
+  }
+}
+Delete Webhook
+Delete a webhook subscription.
+httpDELETE /v1/webhooks/{webhook_id}
+Response: 204 No Content
+
+Analytics
+Get Usage Statistics
+Retrieve API usage statistics.
+httpGET /v1/analytics/usage
+Query Parameters:
+ParameterTypeDescriptionstart_datestringISO 8601 dateend_datestringISO 8601 dategranularitystringhour, day, week, month
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "period": {
+      "start": "2026-02-01T00:00:00Z",
+      "end": "2026-02-11T23:59:59Z"
+    },
+    "total_requests": 125000,
+    "successful_requests": 123500,
+    "failed_requests": 1500,
+    "average_response_time_ms": 245,
+    "by_endpoint": [
+      {
+        "endpoint": "/v1/users",
+        "method": "GET",
+        "count": 45000,
+        "avg_response_time_ms": 180
+      }
+    ],
+    "by_status_code": {
+      "200": 100000,
+      "201": 20000,
+      "400": 1000,
+      "404": 500,
+      "500": 100
+    }
+  }
+}
+Get Project Analytics
+Retrieve project-specific analytics.
+httpGET /v1/projects/{project_id}/analytics
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "tasks": {
+      "total": 150,
+      "completed": 100,
+      "in_progress": 35,
+      "todo": 15
+    },
+    "velocity": {
+      "tasks_per_week": 12.5,
+      "completion_rate": 0.87
+    },
+    "team": {
+      "active_members": 8,
+      "total_contributions": 450
+    }
+  }
+}
+
+Batch Operations
+Execute Batch Request
+Execute multiple operations in a single request.
+httpPOST /v1/batch
+Request Body:
+json{
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/users",
+      "body": {
+        "email": "user1@example.com",
+        "name": "User 1"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/users/usr_abc123"
+    },
+    {
+      "method": "PATCH",
+      "path": "/tasks/tsk_def456",
+      "body": {
+        "status": "done"
+      }
+    }
+  ]
+}
+Response: 200 OK
+json{
+  "status": "success",
+  "results": [
+    {
+      "status": 201,
+      "body": {
+        "id": "usr_new123",
+        "email": "user1@example.com"
+      }
+    },
+    {
+      "status": 200,
+      "body": {
+        "id": "usr_abc123",
+        "name": "John Doe"
+      }
+    },
+    {
+      "status": 200,
+      "body": {
+        "id": "tsk_def456",
+        "status": "done"
+      }
+    }
+  ]
+}
