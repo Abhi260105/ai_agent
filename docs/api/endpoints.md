@@ -86,3 +86,130 @@ Optional Fields:
 
 role (string, default: user)
 profile (object)
+
+Response: 201 Created
+json{
+  "status": "success",
+  "data": {
+    "id": "usr_def456",
+    "email": "jane.smith@example.com",
+    "name": "Jane Smith",
+    "role": "user",
+    "status": "pending",
+    "created_at": "2026-02-11T12:00:00Z"
+  }
+}
+Error Responses:
+
+400 Bad Request - Invalid input
+409 Conflict - Email already exists
+422 Unprocessable Entity - Validation errors
+
+Update User
+Update an existing user.
+httpPATCH /v1/users/{user_id}
+Request Body:
+json{
+  "name": "Jane Doe",
+  "profile": {
+    "bio": "Senior Product Manager"
+  }
+}
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "id": "usr_def456",
+    "email": "jane.smith@example.com",
+    "name": "Jane Doe",
+    "role": "user",
+    "status": "active",
+    "updated_at": "2026-02-11T12:30:00Z"
+  }
+}
+Delete User
+Delete a user permanently.
+httpDELETE /v1/users/{user_id}
+Response: 204 No Content
+
+Authentication
+Get Current User
+Get the authenticated user's information.
+httpGET /v1/auth/me
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "id": "usr_abc123",
+    "email": "john.doe@example.com",
+    "name": "John Doe",
+    "permissions": ["users:read", "users:write"]
+  }
+}
+Change Password
+Change the current user's password.
+httpPOST /v1/auth/password/change
+Request Body:
+json{
+  "current_password": "OldP@ssw0rd",
+  "new_password": "NewP@ssw0rd123"
+}
+Response: 200 OK
+json{
+  "status": "success",
+  "message": "Password changed successfully"
+}
+Request Password Reset
+Request a password reset email.
+httpPOST /v1/auth/password/reset
+Request Body:
+json{
+  "email": "john.doe@example.com"
+}
+Response: 202 Accepted
+json{
+  "status": "success",
+  "message": "Password reset email sent"
+}
+
+Organizations
+List Organizations
+Retrieve organizations the user has access to.
+httpGET /v1/organizations
+Response: 200 OK
+json{
+  "status": "success",
+  "data": [
+    {
+      "id": "org_abc123",
+      "name": "Acme Corporation",
+      "slug": "acme-corp",
+      "plan": "enterprise",
+      "member_count": 150,
+      "created_at": "2025-06-01T00:00:00Z"
+    }
+  ]
+}
+Get Organization
+Retrieve a specific organization.
+httpGET /v1/organizations/{org_id}
+Response: 200 OK
+json{
+  "status": "success",
+  "data": {
+    "id": "org_abc123",
+    "name": "Acme Corporation",
+    "slug": "acme-corp",
+    "plan": "enterprise",
+    "settings": {
+      "allow_signup": true,
+      "require_2fa": true
+    },
+    "billing": {
+      "plan": "enterprise",
+      "seats": 150,
+      "billing_email": "billing@acme.com"
+    },
+    "created_at": "2025-06-01T00:00:00Z"
+  }
+}
