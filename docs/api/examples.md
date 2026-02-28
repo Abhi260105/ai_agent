@@ -424,3 +424,234 @@ app.get('/logout', (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
+
+Project and Task Management
+Complete Workflow Example
+Python
+pythonimport requests
+from typing import List, Dict
+from datetime import datetime, timedelta
+
+class ProjectManager:
+    def __init__(self, api_key: str, org_id: str):
+        self.api_key = api_key
+        self.org_id = org_id
+        self.base_url = 'https://api.example.com/v1'
+        self.headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+    
+    def create_project(self, name: str, description: str) -> Dict:
+        """Create a new project."""
+        response = requests.post(
+            f'{self.base_url}/organizations/{self.org_id}/projects',
+            headers=self.headers,
+            json={
+                'name': name,
+                'description': description,
+                'settings': {
+                    'visibility': 'private',
+                    'enable_notifications': True
+                }
+            }
+        )
+        response.raise_for_status()
+        return response.json()['data']
+    
+    def create_tasks(self, project_id: str, tasks: List[Dict]) -> List[Dict]:
+        """Create multiple tasks in a project."""
+        created_tasks = []
+        
+        for task in tasks:
+            response = requests.post(
+                f'{self.base_url}/projects/{project_id}/tasks',
+                headers=self.headers,
+                json=task
+            )
+            response.raise_for_status()
+            created_tasks.append(response.json()['data'])
+        
+        return created_tasks
+    
+    def assign_tasks(self, tasks: List[Dict], assignees: List[str]) -> None:
+        """Assign tasks to team members."""
+        for i, task in enumerate(tasks):
+            assignee = assignees[i % len(assignees)]
+            
+            requests.patch(
+                f'{self.base_url}/tasks/{task["id"]}',
+                headers=self.headers,
+                json={'assignee_id': assignee}
+            )
+    
+    def get_project_status(self, project_id: str) -> Dict:
+        """Get project analytics and status."""
+        response = requests.get(
+            f'{self.base_url}/projects/{project_id}/analytics',
+            headers=self.headers
+        )
+        response.raise_for_status()
+        return response.json()['data']
+    
+    def complete_task(self, task_id: str) -> Dict:
+        """Mark a task as complete."""
+        response = requests.patch(
+            f'{self.base_url}/tasks/{task_id}',
+            headers=self.headers,
+            json={
+                'status': 'done',
+                'completed_at': datetime.utcnow().isoformat() + 'Z'
+            }
+        )
+        response.raise_for_status()
+        return response.json()['data']
+
+# Example: Set up a new project
+if __name__ == '__main__':
+    manager = ProjectManager(
+        api_key='sk_live_abc123xyz789',
+        org_id='org_abc123'
+    )
+    
+    # Create project
+    project = manager.create_project(
+        name='Q2 2026 Product Launch',
+        description='Launch new product features for Q2'
+    )
+    print(f"Created project: {project['id']}")
+    
+    # Define tasks
+    tasks = [
+        {
+            'title': 'Design UI mockups',
+            'description': 'Create mockups for new features',
+            'priority': 'high',
+            'due_date': (datetime.now() + timedelta(days=7)).date().isoformat(),
+            'tags': ['design', 'frontend']
+        },
+        {
+            'title': 'Implement backend API',
+            'description': 'Build REST API endpoints',
+            'priority': 'high',
+            'due_date': (datetime.now() + timedelta(days=14)).date().isoformat(),
+            'tags': ['backend', 'api']
+        },
+        {
+            'title': 'Write documentation',
+            'description': 'API documentation and user guides',
+            'priority': 'medium',
+            'due_date': (datetime.now() + timedelta(days=21)).date().isoformat(),
+            'tags': ['documentation']
+        }
+    ]
+    
+    # Create tasks
+    created_tasks = manager.create_tasks(project['id'], tasks)
+    print(f"Created {len(created_tasks)} tasks")
+    
+    # Assign tasks to team
+    team_members = ['usr_alice123', 'usr_bob456', 'usr_charlie789']
+    manager.assign_tasks(created_tasks, team_members)
+    print("Tasks assigned to team members")
+    
+    # Check project status
+    status = manager.get_project_status(project['id'])
+    print(f"Project status: {status['tasks']}")
+
+File Upload and Management
+Upload Files with Progress
+Python
+pythonimport requests
+from pathlib import Path
+from tqdm import tqdm
+
+class FileUploader:
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+        self.base_url = 'https://api.example.com/v1'
+        self.headers = {'Authorization': f'Bearer {api_key}'}
+    
+    def upload_file(self, project_id: str, file_path: str, folder: str = None):
+        """Upload a file with progress bar."""
+        file_path = Path(file_path)
+        file_size = file_path.stat().st_size
+        
+        with open(file_path, 'rb') as f:
+            # Wrap file in tqdm for progress
+            with tqdm(total=file_size, unit='B', unit_scale=True, desc=file_path.name) as pbar:
+                def read_with_progress(chunk_size=8192):
+                    while True:
+                        chunk = f.read(chunk_size)
+                        if not chunk:
+                            break
+                        pbar.update(len(chunk))
+                        yield chunk
+                
+                files = {'file': (file_path.name, read_with_progress())}
+                data = {}
+                if folder:
+                    data['folder'] = folder
+                
+                response = requests.post(
+                    f'{self.base_url}/projects/{project_id}/files',
+                    headers=self.headers,
+                    files=files,
+                    data=data
+                )
+        
+        response.raise_for_status()
+        return response.json()['data']
+    
+    def upload_directory(self, project_id: str, directory: str, folder: str = None):
+        """Upload all files in a directory."""
+        directory = Path(directory)
+        uploaded_files = []
+        
+        for file_path in directory.rglob('*'):
+            if file_path.is_file():
+                relative_path = file_path.relative_to(directory)
+                target_folder = f"{folder}/{relative_path.parent}" if folder else str(relative_path.parent)
+                
+                print(f"\nUploading {file_path.name}...")
+                result = self.upload_file(project_id, str(file_path), target_folder)
+                uploaded_files.append(result)
+        
+        return uploaded_files
+    
+    def download_file(self, file_id: str, output_path: str):
+        """Download a file."""
+        response = requests.get(
+            f'{self.base_url}/files/{file_id}/download',
+            headers=self.headers,
+            stream=True
+        )
+        response.raise_for_status()
+        
+        total_size = int(response.headers.get('content-length', 0))
+        
+        with open(output_path, 'wb') as f:
+            with tqdm(total=total_size, unit='B', unit_scale=True, desc=output_path) as pbar:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+                    pbar.update(len(chunk))
+
+# Example usage
+if __name__ == '__main__':
+    uploader = FileUploader('sk_live_abc123xyz789')
+    
+    # Upload single file
+    result = uploader.upload_file(
+        project_id='prj_abc123',
+        file_path='./designs/mockup.png',
+        folder='designs/v2'
+    )
+    print(f"\nUploaded: {result['url']}")
+    
+    # Upload directory
+    results = uploader.upload_directory(
+        project_id='prj_abc123',
+        directory='./assets',
+        folder='project-assets'
+    )
+    print(f"\nUploaded {len(results)} files")
