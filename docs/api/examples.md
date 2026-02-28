@@ -655,3 +655,72 @@ if __name__ == '__main__':
         folder='project-assets'
     )
     print(f"\nUploaded {len(results)} files")
+
+    Webhook Handler
+Receive and Verify Webhooks
+Python (Flask)
+pythonfrom flask import Flask, request, jsonify
+import hmac
+import hashlib
+import json
+
+app = Flask(__name__)
+
+WEBHOOK_SECRET = 'your_webhook_secret'
+
+def verify_signature(payload: bytes, signature: str) -> bool:
+    """Verify webhook signature."""
+    expected = hmac.new(
+        WEBHOOK_SECRET.encode(),
+        payload,
+        hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
+
+@app.route('/webhooks', methods=['POST'])
+def handle_webhook():
+    # Get signature from header
+    signature = request.headers.get('X-Webhook-Signature')
+    if not signature:
+        return jsonify({'error': 'No signature provided'}), 401
+    
+    # Verify signature
+    if not verify_signature(request.data, signature):
+        return jsonify({'error': 'Invalid signature'}), 401
+    
+    # Parse event
+    event = request.json
+    event_type = event.get('type')
+    event_data = event.get('data')
+    
+    print(f"Received webhook: {event_type}")
+    
+    # Handle different event types
+    if event_type == 'user.created':
+        handle_user_created(event_data)
+    elif event_type == 'task.completed':
+        handle_task_completed(event_data)
+    elif event_type == 'file.uploaded':
+        handle_file_uploaded(event_data)
+    else:
+        print(f"Unhandled event type: {event_type}")
+    
+    return jsonify({'status': 'received'}), 200
+
+def handle_user_created(data):
+    """Handle user creation event."""
+    print(f"New user created: {data['email']}")
+    # Send welcome email, create onboarding tasks, etc.
+
+def handle_task_completed(data):
+    """Handle task completion event."""
+    print(f"Task completed: {data['title']}")
+    # Update metrics, notify team, etc.
+
+def handle_file_uploaded(data):
+    """Handle file upload event."""
+    print(f"File uploaded: {data['name']}")
+    # Process file, generate thumbnail, etc.
+
+if __name__ == '__main__':
+    app.run(port=5000)
