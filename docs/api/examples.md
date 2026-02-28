@@ -792,3 +792,88 @@ function handleFileUploaded(data) {
 app.listen(3000, () => {
   console.log('Webhook server running on port 3000');
 });
+Error Handling and Retry Logic
+Robust API Client
+Python
+pythonimport requests
+import time
+from typing import Optional, Dict, Any
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class APIClient:
+    def __init__(self, api_key: str, max_retries: int = 3):
+        self.api_key = api_key
+        self.base_url = 'https://api.example.com/v1'
+        self.max_retries = max_retries
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        })
+    
+    def request(
+        self,
+        method: str,
+        endpoint: str,
+        **kwargs
+    ) -> Dict[str, Any]:
+        """Make API request with retry logic."""
+        url = f'{self.base_url}/{endpoint.lstrip("/")}'
+        
+        for attempt in range(self.max_retries):
+            try:
+                response = self.session.request(method, url, **kwargs)
+                
+                # Handle rate limiting
+                if response.status_code == 429:
+                    retry_after = int(response.headers.get('Retry-After', 60))
+                    logger.warning(f"Rate limited. Retrying after {retry_after}s")
+                    time.sleep(retry_after)
+                    continue
+                
+                # Handle server errors with exponential backoff
+                if response.status_code >= 500:
+                    if attempt < self.max_retries - 1:
+                        wait_time = 2 ** attempt
+                        logger.warning(f"Server error. Retrying in {wait_time}s")
+                        time.sleep(wait_time)
+                        continue
+                
+                # Raise for other HTTP errors
+                response.raise_for_status()
+                return response.json()
+                
+            except requests.exceptions.RequestException as e:
+                if attempt == self.max_retries - 1:
+                    logger.error(f"Request failed after {self.max_retries} attempts")
+                    raise
+                
+                wait_time = 2 ** attempt
+                logger.warning(f"Request failed: {e}. Retrying in {wait_time}s")
+                time.sleep(wait_time)
+    
+    def get(self, endpoint: str, **kwargs) -> Dict:
+        return self.request('GET', endpoint, **kwargs)
+    
+    def post(self, endpoint: str, **kwargs) -> Dict:
+        return self.request('POST', endpoint, **kwargs)
+    
+    def patch(self, endpoint: str, **kwargs) -> Dict:
+        return self.request('PATCH', endpoint, **kwargs)
+    
+    def delete(self, endpoint: str, **kwargs) -> Dict:
+        return self.request('DELETE', endpoint, **kwargs)
+
+# Example usage
+if __name__ == '__main__':
+    client = APIClient('sk_live_abc123xyz789')
+    
+    try:
+        # This will automatically retry on failures
+        users = client.get('/users', params={'limit': 50})
+        print(f"Retrieved {len(users['data'])} users")
+    except Exception as e:
+        logger.error(f"Failed to fetch users: {e}")
