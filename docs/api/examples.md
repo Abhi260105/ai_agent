@@ -724,3 +724,71 @@ def handle_file_uploaded(data):
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+Node.js (Express)
+javascriptconst express = require('express');
+const crypto = require('crypto');
+
+const app = express();
+app.use(express.json());
+
+const WEBHOOK_SECRET = 'your_webhook_secret';
+
+function verifySignature(payload, signature) {
+  const expected = crypto
+    .createHmac('sha256', WEBHOOK_SECRET)
+    .update(payload)
+    .digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signature)
+  );
+}
+
+app.post('/webhooks', (req, res) => {
+  const signature = req.headers['x-webhook-signature'];
+  
+  if (!signature) {
+    return res.status(401).json({ error: 'No signature' });
+  }
+  
+  const payload = JSON.stringify(req.body);
+  if (!verifySignature(payload, signature)) {
+    return res.status(401).json({ error: 'Invalid signature' });
+  }
+  
+  const { type, data } = req.body;
+  console.log(`Received webhook: ${type}`);
+  
+  switch (type) {
+    case 'user.created':
+      handleUserCreated(data);
+      break;
+    case 'task.completed':
+      handleTaskCompleted(data);
+      break;
+    case 'file.uploaded':
+      handleFileUploaded(data);
+      break;
+    default:
+      console.log(`Unhandled event: ${type}`);
+  }
+  
+  res.json({ status: 'received' });
+});
+
+function handleUserCreated(data) {
+  console.log(`New user: ${data.email}`);
+}
+
+function handleTaskCompleted(data) {
+  console.log(`Task completed: ${data.title}`);
+}
+
+function handleFileUploaded(data) {
+  console.log(`File uploaded: ${data.name}`);
+}
+
+app.listen(3000, () => {
+  console.log('Webhook server running on port 3000');
+});
