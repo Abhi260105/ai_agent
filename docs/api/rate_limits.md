@@ -186,3 +186,99 @@ for user_id in user_ids:
 
 # Wait for completion
 queue.wait_completion()
+
+6. Distribute Load Across Time
+For large batch operations, spread requests over time:
+pythonimport time
+
+def process_large_batch(items, process_func, requests_per_minute=60):
+    """Process large batch while respecting rate limits."""
+    interval = 60 / requests_per_minute
+    
+    for i, item in enumerate(items):
+        process_func(item)
+        
+        # Progress indication
+        if (i + 1) % 100 == 0:
+            print(f"Processed {i + 1}/{len(items)} items")
+        
+        # Rate limiting
+        if i < len(items) - 1:  # Don't wait after last item
+            time.sleep(interval)
+
+# Usage
+process_large_batch(
+    items=users_to_update,
+    process_func=lambda user: client.users.update(user['id'], user['data']),
+    requests_per_minute=50  # Stay below limit
+)
+Webhook Rate Limits
+Webhooks sent to your endpoints are also rate-limited:
+MetricLimitNotesEvents/Second10Per webhook endpointRetries5With exponential backoffTimeout10sPer webhook delivery
+Webhook Retry Schedule:
+
+1st retry: 10 seconds
+2nd retry: 30 seconds
+3rd retry: 1 minute
+4th retry: 5 minutes
+5th retry: 15 minutes
+
+After 5 failed attempts, the webhook is marked as failed and must be manually retried.
+Increasing Rate Limits
+Temporary Increase
+For one-time bulk operations:
+
+Contact support at api-support@example.com
+Provide details: operation type, duration needed, expected volume
+Approval typically within 24 hours
+Temporary limit increase (up to 7 days)
+
+Permanent Increase
+For sustained higher usage:
+
+Upgrade to a higher plan
+Contact sales for custom enterprise limits
+Provide usage projections and use case
+
+Monitoring Usage
+Check Current Usage
+httpGET /v1/analytics/rate-limits
+Response:
+json{
+  "status": "success",
+  "data": {
+    "current_period": {
+      "start": "2026-02-11T12:00:00Z",
+      "end": "2026-02-11T12:01:00Z",
+      "requests": 45,
+      "limit": 1000,
+      "percentage": 4.5
+    },
+    "today": {
+      "requests": 25000,
+      "limit": 500000,
+      "percentage": 5.0
+    },
+    "peak_usage": {
+      "timestamp": "2026-02-10T14:30:00Z",
+      "requests_per_minute": 850
+    }
+  }
+}
+Set Up Alerts
+Configure alerts when approaching limits:
+pythondef check_rate_limit_usage(client, threshold=0.8):
+    """Alert when usage exceeds threshold."""
+    response = client.get('/analytics/rate-limits')
+    data = response['data']
+    
+    current = data['current_period']
+    if current['percentage'] / 100 > threshold:
+        send_alert(
+            f"Rate limit warning: {current['percentage']}% used "
+            f"({current['requests']}/{current['limit']})"
+        )
+
+# Run periodically
+import schedule
+schedule.every(5).minutes.do(check_rate_limit_usage, client)
