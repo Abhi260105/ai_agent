@@ -282,3 +282,86 @@ pythondef check_rate_limit_usage(client, threshold=0.8):
 # Run periodically
 import schedule
 schedule.every(5).minutes.do(check_rate_limit_usage, client)
+Common Rate Limit Scenarios
+Scenario 1: Bulk Data Import
+Problem: Need to import 10,000 records
+Solution:
+python# Calculate time needed
+records = 10,000
+rate_limit = 300  # requests per minute
+batches = 100  # batch size
+
+batch_count = records // batches  # 100 batches
+minutes_needed = batch_count / rate_limit  # ~0.33 minutes
+
+print(f"Import will take approximately {minutes_needed:.1f} minutes")
+
+# Process in batches
+for i in range(0, len(data), batches):
+    batch = data[i:i + batches]
+    client.batch.execute([
+        {'method': 'POST', 'path': '/users', 'body': record}
+        for record in batch
+    ])
+    
+    # Rate limiting
+    time.sleep(60 / rate_limit)
+Scenario 2: Real-time Monitoring
+Problem: Need to poll for updates frequently
+Solution: Use webhooks instead of polling
+python# ❌ Don't: Poll every second
+while True:
+    updates = client.get('/updates')
+    process(updates)
+    time.sleep(1)  # 60 requests/minute
+
+# ✅ Do: Use webhooks
+@app.route('/webhooks', methods=['POST'])
+def handle_webhook():
+    updates = request.json
+    process(updates)
+    return {'status': 'received'}
+Scenario 3: Multiple API Keys
+Problem: Single API key insufficient for high-volume application
+Solution: Use multiple API keys with load balancing
+pythonimport itertools
+
+class MultiKeyClient:
+    def __init__(self, api_keys):
+        self.clients = [APIClient(key) for key in api_keys]
+        self.cycle = itertools.cycle(self.clients)
+    
+    def get(self, endpoint, **kwargs):
+        """Round-robin across API keys."""
+        client = next(self.cycle)
+        return client.get(endpoint, **kwargs)
+
+# Usage with 3 API keys
+client = MultiKeyClient([
+    'sk_live_key1',
+    'sk_live_key2',
+    'sk_live_key3'
+])
+
+# Each request uses a different key
+for i in range(1000):
+    client.get(f'/users/{i}')
+FAQ
+Q: What happens if I exceed the daily limit?
+A: Your API access is suspended until the limit resets at midnight UTC. Upgrade your plan for higher limits.
+Q: Do failed requests count toward rate limits?
+A: Yes, all requests (including 4xx and 5xx errors) count toward rate limits.
+Q: Can I request a temporary rate limit increase?
+A: Yes, contact support with details about your use case. Temporary increases are typically granted for 24-72 hours.
+Q: Do webhook deliveries count toward my rate limit?
+A: No, webhooks you receive don't count toward your rate limit. Only API requests you make count.
+Q: How are concurrent requests handled?
+A: Concurrent requests all count toward your limit. If you send 100 requests simultaneously and your limit is 60/minute, you'll be rate-limited.
+Q: Does pagination affect rate limits?
+A: Each page request counts as one request. Use larger page sizes (up to 100) to reduce request count.
+Support
+Need help with rate limits?
+
+Documentation: https://docs.example.com/rate-limits
+Support: api-support@example.com
+Sales: Contact for custom limits
