@@ -166,3 +166,54 @@ Fill in task details
    Tags: design, frontend, priority
    
    Attachments: [Upload wireframes]
+
+   Click "Create Task"
+
+Task Statuses
+Default workflow:
+To Do → In Progress → In Review → Done
+Custom Workflows:
+
+Add custom statuses (Settings > Workflows)
+Create approval stages
+Set up automated transitions
+
+
+Inviting Team Members
+Send Invitations
+
+Go to Settings > Team
+Click "Invite Member"
+Enter details
+
+   Email: jane.doe@example.com
+   Role: Member
+   Projects: Website Redesign, Mobile App
+   Message: Welcome to the team! 🎉
+
+Click "Send Invitation"
+
+Team Roles
+RolePermissionsOwnerFull access, billing, team managementAdminCreate/edit/delete projects, invite membersMemberCreate/edit tasks, comment, upload filesGuestView only, limited commenting
+Role Comparison:
+                Owner  Admin  Member  Guest
+Create Project    ✓      ✓      ✗      ✗
+Edit Project      ✓      ✓      ✓      ✗
+Delete Project    ✓      ✓      ✗      ✗
+Create Task       ✓      ✓      ✓      ✗
+Edit Task         ✓      ✓      ✓      ✗
+Comment          ✓      ✓      ✓      ✓
+Upload Files     ✓      ✓      ✓      ✗
+Invite Members   ✓      ✓      ✗      ✗
+View Billing     ✓      ✗      ✗      ✗
+Accept Invitation
+Team members receive an email:
+Subject: You've been invited to join [Team Name]
+
+Hi Jane,
+
+John Doe has invited you to join the Website Redesign project.
+
+[Accept Invitation]
+
+If you don't have an account, you'll be prompted to create one.
