@@ -450,3 +450,50 @@ Video Tutorials:
 Getting Started (5 min)
 Team Collaboration (8 min)
 Advanced Features (12 min)
+
+Interactive Guides:
+
+Complete the onboarding checklist
+Take the product tour
+Try the demo project
+
+Join the Community
+
+Follow us on Twitter: @exampleapp
+Join our Slack community: [Invite Link]
+Subscribe to newsletter: Monthly tips and updates
+Share feedback: feedback@example.com
+
+
+Quick Reference Card
+Essential Actions
+┌─────────────────────────────────────────────┐
+│ QUICK ACTIONS                               │
+├─────────────────────────────────────────────┤
+│ Create Task         N or + button           │
+│ Search             /  or Cmd+K              │
+│ Invite Member      Settings > Team          │
+│ Upload File        Drag & drop anywhere     │
+│ @Mention           Type @ in comment        │
+│ Due Date           Type "due tomorrow"      │
+│ Priority           ! low, !! med, !!! high  │
+└─────────────────────────────────────────────┘
+Smart Input
+Tasks support natural language:
+
+"Design homepage due friday @jane !high"
+"Review PR #123 tomorrow"
+"Bug fix urgent @team-backend"
+
+Status Indicators
+🟢 Online          Available now
+🟡 Away            Back soon
+🔴 Busy            Do not disturb
+⚫ Offline         Not available
+
+Welcome aboard! 🚀
+Need help? We're here for you:
+
+Email: support@example.com
+Chat: Click the help icon in bottom-right
+Forum: https://community.example.com
