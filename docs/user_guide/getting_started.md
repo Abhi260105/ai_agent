@@ -217,3 +217,70 @@ John Doe has invited you to join the Website Redesign project.
 [Accept Invitation]
 
 If you don't have an account, you'll be prompted to create one.
+
+Basic Workflows
+Daily Task Management
+Morning Routine:
+
+Check dashboard for today's tasks
+Review notifications
+Update task statuses
+Add new tasks as needed
+
+During Work:
+
+Move tasks through workflow (To Do → In Progress → Done)
+Add comments and updates
+Upload files and attachments
+Mention team members with @username
+
+End of Day:
+
+Update progress on in-progress tasks
+Log time spent (if time tracking enabled)
+Set priorities for tomorrow
+
+Collaboration
+Comments and Mentions:
+@jane Can you review the mockup when you get a chance?
+This builds on the wireframes from last week.
+
+See attached file: homepage-v2.png
+File Sharing:
+
+Drag and drop files into task or project
+Organize in folders
+Version control automatic
+Download anytime
+
+Real-time Updates:
+
+See who's viewing the same task
+Live cursor positions in documents
+Instant notifications
+Activity feed
+
+Notifications
+Types:
+
+🔔 Task assigned to you
+💬 Someone mentions you
+✅ Task completed
+📎 File uploaded
+🎯 Deadline approaching
+
+Manage Notifications:
+
+Settings > Notifications
+Per-project settings
+Mute specific threads
+Digest options
+
+
+Keyboard Shortcuts
+Global Shortcuts
+ShortcutActionG then HGo to HomeG then PGo to ProjectsG then TGo to TasksG then SGo to Settings/ or Cmd+KSearchNNew task?Show keyboard shortcuts
+Task View
+ShortcutActionEEdit taskCAdd commentAAssign to mePChange priorityDSet due dateLAdd labelEscClose modal
+Navigation
+ShortcutActionJNext taskKPrevious taskEnterOpen taskCmd+EnterSave and close
