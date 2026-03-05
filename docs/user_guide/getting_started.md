@@ -284,3 +284,169 @@ Task View
 ShortcutActionEEdit taskCAdd commentAAssign to mePChange priorityDSet due dateLAdd labelEscClose modal
 Navigation
 ShortcutActionJNext taskKPrevious taskEnterOpen taskCmd+EnterSave and close
+
+Mobile App
+Download
+
+iOS: App Store
+Android: Google Play
+
+Mobile Features
+✅ Available:
+
+View and edit tasks
+Add comments
+Upload photos from camera
+Push notifications
+Offline mode
+Voice memos
+
+⚠️ Limited:
+
+Project creation (web only)
+Advanced settings (web only)
+Bulk operations (web only)
+Custom reports (web only)
+
+Offline Mode
+Mobile app works offline:
+
+Changes sync when connection restored
+Offline indicator in status bar
+Conflicts resolved automatically
+Manual sync available in Settings
+
+
+Integration Setup
+Connect Tools
+Integrate with your favorite tools:
+Communication:
+
+Slack: Post updates to channels
+Microsoft Teams: Notifications and bot
+Email: Sync tasks with email
+
+Development:
+
+GitHub: Link commits and PRs
+GitLab: CI/CD integration
+Jira: Two-way sync
+
+Storage:
+
+Google Drive: Attach files from Drive
+Dropbox: Sync folders
+OneDrive: Link documents
+
+Setup Instructions:
+
+Settings > Integrations
+Click "Connect" next to desired tool
+Authorize access
+Configure sync settings
+
+API Access
+For developers:
+
+Generate API Key
+
+Settings > API Keys
+Click "Create New Key"
+Name: Production, Development, etc.
+Copy key (shown only once)
+
+
+Test API
+
+bash   curl https://api.example.com/v1/auth/me \
+     -H "Authorization: Bearer YOUR_API_KEY"
+
+Read Documentation
+
+API docs: https://docs.example.com/api
+Code examples
+SDKs available
+
+
+
+
+Getting Help
+Help Resources
+Documentation:
+
+📚 User Guide: https://docs.example.com/guide
+🔧 API Reference: https://docs.example.com/api
+💡 Best Practices: https://docs.example.com/best-practices
+
+Community:
+
+💬 Community Forum: https://community.example.com
+🎓 Video Tutorials: https://youtube.com/example
+📝 Blog: https://blog.example.com
+
+Support:
+
+✉️ Email: support@example.com
+💬 Live Chat: Available 9am-5pm EST (Pro+)
+📞 Phone: +1-800-EXAMPLE (Enterprise only)
+
+Common Questions
+Q: How do I reset my password?
+
+Go to login page
+Click "Forgot password?"
+Enter your email
+Check email for reset link
+
+Q: Can I export my data?
+Yes! Settings > Data > Export All Data
+
+Formats: JSON, CSV, ZIP
+Includes: Tasks, files, comments
+Processing time: 5-30 minutes
+
+Q: How do I delete my account?
+Settings > Account > Delete Account
+
+Exports data first (optional)
+30-day grace period
+Permanent after 30 days
+
+Q: Is there a student discount?
+Yes! 50% off Pro plan for students
+
+Valid .edu email required
+Must reverify annually
+
+
+Next Steps
+Beginner Track
+
+✅ Create your first project
+⬜ Invite 3 team members
+⬜ Complete 5 tasks
+⬜ Upload 10 files
+⬜ Set up 1 integration
+
+Intermediate Track
+
+⬜ Create custom workflow
+⬜ Set up automation rules
+⬜ Generate first report
+⬜ Use time tracking
+⬜ Create project template
+
+Advanced Track
+
+⬜ Build custom integration
+⬜ Use API for automation
+⬜ Set up SSO
+⬜ Configure advanced permissions
+⬜ Create custom dashboards
+
+Recommended Tutorials
+Video Tutorials:
+
+Getting Started (5 min)
+Team Collaboration (8 min)
+Advanced Features (12 min)
