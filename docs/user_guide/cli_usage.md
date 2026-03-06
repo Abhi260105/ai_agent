@@ -347,3 +347,138 @@ example team list --show-roles
 
 # Filter by role
 example team list --role admin
+Invite Member
+bash# Interactive invite
+example team invite
+
+# Direct invite
+example team invite jane.doe@example.com \
+  --role member \
+  --projects prj_abc123,prj_def456
+
+# Invite multiple members
+example team invite \
+  alice@example.com \
+  bob@example.com \
+  charlie@example.com \
+  --role member
+Remove Member
+bash# Remove member
+example team remove jane@example.com
+
+# Remove with confirmation
+example team remove jane@example.com --confirm
+Update Member Role
+bash# Change role
+example team update jane@example.com --role admin
+
+# Add to projects
+example team update jane@example.com \
+  --add-projects prj_ghi789
+
+Automation & Scripting
+Batch Operations
+bash# Complete all tasks assigned to you
+example tasks list --assignee me --status in-progress \
+  --format json | \
+  jq -r '.data[].id' | \
+  xargs -I {} example tasks complete {}
+
+# Archive old projects
+example projects list --status inactive --format json | \
+  jq -r '.data[].id' | \
+  xargs -I {} example projects archive {}
+Scripting Examples
+Daily Standup Report:
+bash#!/bin/bash
+# daily-standup.sh
+
+echo "📊 Daily Standup Report"
+echo "======================="
+echo ""
+
+echo "✅ Completed Yesterday:"
+example tasks list \
+  --assignee me \
+  --status done \
+  --completed-after yesterday \
+  --format json | \
+  jq -r '.data[] | "  - \(.title)"'
+
+echo ""
+echo "🏃 Working On Today:"
+example tasks list \
+  --assignee me \
+  --status in-progress \
+  --format json | \
+  jq -r '.data[] | "  - \(.title)"'
+
+echo ""
+echo "⚠️ Blockers:"
+example tasks list \
+  --assignee me \
+  --priority urgent \
+  --status blocked \
+  --format json | \
+  jq -r '.data[] | "  - \(.title)"'
+Automated Task Creation:
+bash#!/bin/bash
+# create-weekly-tasks.sh
+
+TASKS=(
+  "Weekly team meeting"
+  "Review pull requests"
+  "Update documentation"
+  "Sprint planning"
+)
+
+for task in "${TASKS[@]}"; do
+  example tasks create "$task" \
+    --project prj_abc123 \
+    --assignee me \
+    --due +7d \
+    --tags recurring
+done
+Backup Script:
+bash#!/bin/bash
+# backup-projects.sh
+
+BACKUP_DIR="$HOME/backups/example/$(date +%Y%m%d)"
+mkdir -p "$BACKUP_DIR"
+
+# Export projects
+example projects list --format json > "$BACKUP_DIR/projects.json"
+
+# Export tasks
+example tasks list --format json > "$BACKUP_DIR/tasks.json"
+
+# Download files
+example files download --all --output "$BACKUP_DIR/files/"
+
+echo "✓ Backup completed: $BACKUP_DIR"
+Webhooks from CLI
+bash# List webhooks
+example webhooks list
+
+# Create webhook
+example webhooks create \
+  --url https://your-app.com/webhooks \
+  --events user.created,task.completed \
+  --secret your_webhook_secret
+
+# Test webhook
+example webhooks test whk_abc123
+
+# Delete webhook
+example webhooks delete whk_abc123
+
+Watch Mode
+Monitor changes in real-time:
+bash# Watch task list
+example tasks list --watch
+
+# Watch specific project
+example projects get prj_abc123 --watch
+
+# Watch with custom interval
+example tasks list --watch --interval 5s
