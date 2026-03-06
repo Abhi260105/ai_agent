@@ -482,3 +482,60 @@ example projects get prj_abc123 --watch
 
 # Watch with custom interval
 example tasks list --watch --interval 5s
+
+Output Formatting
+Format Options
+bash# Table (default)
+example tasks list --output table
+
+# JSON
+example tasks list --output json
+
+# JSON (pretty)
+example tasks list --output json --pretty
+
+# YAML
+example tasks list --output yaml
+
+# CSV
+example tasks list --output csv
+
+# Custom template
+example tasks list --template "{{.id}}: {{.title}}"
+Filter Output with JQ
+bash# Get task IDs only
+example tasks list --output json | jq -r '.data[].id'
+
+# Get high priority tasks
+example tasks list --output json | \
+  jq '.data[] | select(.priority == "high")'
+
+# Count tasks by status
+example tasks list --output json | \
+  jq -r '.data | group_by(.status) | 
+  map({status: .[0].status, count: length})'
+Color Output
+bash# Enable colors
+example tasks list --color
+
+# Disable colors
+example tasks list --no-color
+
+# Auto-detect (default)
+example tasks list
+
+Advanced Features
+Shell Completion
+Bash:
+bashexample completion bash > /etc/bash_completion.d/example
+Zsh:
+bashexample completion zsh > "${fpath[1]}/_example"
+Fish:
+bashexample completion fish > ~/.config/fish/completions/example.fish
+Aliases
+Create shortcuts in your shell:
+bash# Add to ~/.bashrc or ~/.zshrc
+alias et='example tasks'
+alias ep='example projects'
+alias ec='example tasks create'
+alias el='example tasks list'
