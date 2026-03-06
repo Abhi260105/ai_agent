@@ -231,3 +231,119 @@ example tasks create \
 
 # Natural language parsing
 example tasks create "Fix bug #123 due tomorrow @john !urgent"
+
+Update Task
+bash# Update task status
+example tasks update tsk_abc123 --status done
+
+# Update assignee
+example tasks update tsk_abc123 --assignee jane@example.com
+
+# Update priority
+example tasks update tsk_abc123 --priority high
+
+# Update due date
+example tasks update tsk_abc123 --due +3d  # 3 days from now
+example tasks update tsk_abc123 --due 2026-02-20
+
+# Add comment
+example tasks comment tsk_abc123 "This is looking good!"
+
+# Bulk update
+example tasks update tsk_abc123 tsk_def456 --status done
+Task Actions
+bash# Assign to yourself
+example tasks assign tsk_abc123
+
+# Start task (change to in-progress)
+example tasks start tsk_abc123
+
+# Complete task
+example tasks complete tsk_abc123
+
+# Move task to different project
+example tasks move tsk_abc123 --project prj_def456
+
+# Clone task
+example tasks clone tsk_abc123 --title "Similar task"
+Task Templates
+bash# Create from template
+example tasks create --template bug-report
+
+# List available templates
+example tasks templates list
+
+# Create custom template
+example tasks templates create bug-report \
+  --title "Bug: {{title}}" \
+  --description "Steps to reproduce:\n1. \n2. \n3. " \
+  --priority high \
+  --tags bug
+
+File Management
+Upload Files
+bash# Upload single file
+example files upload design.png --project prj_abc123
+
+# Upload with metadata
+example files upload design.png \
+  --project prj_abc123 \
+  --folder designs/v2 \
+  --description "Homepage mockup v2"
+
+# Upload multiple files
+example files upload *.png --project prj_abc123
+
+# Upload directory
+example files upload ./assets/* \
+  --project prj_abc123 \
+  --folder project-assets \
+  --recursive
+
+# Upload and attach to task
+example files upload screenshot.png \
+  --task tsk_abc123
+List Files
+bash# List all files in project
+example files list --project prj_abc123
+
+# Filter by folder
+example files list --project prj_abc123 --folder designs
+
+# Filter by type
+example files list --project prj_abc123 --type image
+
+# Search files
+example files list --search mockup
+Download Files
+bash# Download single file
+example files download fil_abc123
+
+# Download to specific location
+example files download fil_abc123 --output ~/Downloads/design.png
+
+# Download all files from project
+example files download --project prj_abc123 --all
+
+# Download folder
+example files download --project prj_abc123 --folder designs
+Delete Files
+bash# Delete file
+example files delete fil_abc123
+
+# Delete multiple files
+example files delete fil_abc123 fil_def456
+
+# Delete all files in folder
+example files delete --project prj_abc123 --folder old-designs
+
+Team Management
+List Team Members
+bash# List all members
+example team list
+
+# List with roles
+example team list --show-roles
+
+# Filter by role
+example team list --role admin
