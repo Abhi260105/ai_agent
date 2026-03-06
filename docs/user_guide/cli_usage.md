@@ -539,3 +539,106 @@ alias et='example tasks'
 alias ep='example projects'
 alias ec='example tasks create'
 alias el='example tasks list'
+
+Plugins
+Extend CLI functionality:
+bash# List installed plugins
+example plugins list
+
+# Install plugin
+example plugins install project-stats
+
+# Use plugin
+example project-stats prj_abc123
+
+Troubleshooting
+Common Issues
+Authentication Failed:
+bash# Clear cached credentials
+example logout
+example login
+
+# Verify API key
+example config get api_key
+
+# Test connection
+example whoami
+Command Not Found:
+bash# Check installation
+which example
+
+# Reinstall
+brew reinstall example-cli  # macOS
+Slow Performance:
+bash# Clear cache
+example cache clear
+
+# Limit results
+example tasks list --limit 50
+
+# Use filters
+example tasks list --project prj_abc123
+Debug Mode
+bash# Enable debug output
+example --debug tasks list
+
+# Verbose mode
+example --verbose projects create
+
+# Log to file
+example --log-file /tmp/example.log tasks list
+Get Help
+bash# General help
+example --help
+
+# Command-specific help
+example tasks --help
+example tasks create --help
+
+# Show examples
+example tasks create --examples
+
+CLI Reference
+Global Flags
+FlagDescription--help, -hShow help--version, -vShow version--output, -oOutput format (table, json, yaml, csv)--debugEnable debug mode--verboseVerbose output--quiet, -qQuiet mode (errors only)--no-colorDisable color output--configConfig file path
+Common Commands
+bashexample login                    # Authenticate
+example logout                   # Sign out
+example whoami                   # Show current user
+
+example projects list            # List projects
+example projects create          # Create project
+example projects get <id>        # Get project details
+
+example tasks list              # List tasks
+example tasks create            # Create task
+example tasks update <id>       # Update task
+example tasks complete <id>     # Complete task
+
+example files upload <file>     # Upload file
+example files download <id>     # Download file
+
+example team list               # List team members
+example team invite <email>     # Invite member
+
+Tips & Tricks
+1. Use Shell Functions
+bash# Create task and open in browser
+function task-create-open() {
+  ID=$(example tasks create "$@" --output json | jq -r '.data.id')
+  example tasks get "$ID" --web
+}
+2. Combine with Other Tools
+bash# Create GitHub issue and link task
+gh issue create --title "Bug: Login fails" | \
+  grep -oP 'https://\S+' | \
+  xargs -I {} example tasks create "Fix GitHub issue" --link {}
+3. Daily Task Review
+bash# Add to crontab
+0 9 * * * example tasks list --assignee me --due-today | \
+  mail -s "Tasks Due Today" you@example.com
+4. Export for Reports
+bash# Generate weekly report
+example tasks list \
+  --completed-after "7 days ago" \
+  --output csv > weekly_report.csv
