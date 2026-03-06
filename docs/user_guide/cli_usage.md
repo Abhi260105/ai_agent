@@ -74,3 +74,67 @@ bashexample whoami
 # Organization: Acme Corp (org_abc123)
 # Plan: Pro
 # API Key: sk_live_***xyz789
+
+Configuration
+View Configuration
+bash# Show all configuration
+example config list
+
+# Show specific value
+example config get api_key
+example config get default_org
+Set Configuration
+bash# Set default organization
+example config set default_org acme-corp
+
+# Set output format
+example config set output json
+
+# Set default project
+example config set default_project prj_abc123
+Configuration File
+Location: ~/.example/config.yml
+yaml# Example configuration file
+api_key: sk_live_abc123xyz789
+default_org: acme-corp
+default_project: prj_abc123
+output_format: table  # table, json, yaml, csv
+editor: vim
+timezone: America/New_York
+color: true
+Environment Variables
+Override config with environment variables:
+bashexport EXAMPLE_API_KEY=sk_live_abc123xyz789
+export EXAMPLE_ORG=acme-corp
+export EXAMPLE_OUTPUT=json
+
+Project Management
+List Projects
+bash# List all projects
+example projects list
+
+# List with filters
+example projects list --status active
+example projects list --owner john@example.com
+example projects list --limit 10
+
+# Output formats
+example projects list --output json
+example projects list --output csv > projects.csv
+Example Output:
+┌──────────────┬─────────────────────┬────────┬────────────┬────────────┐
+│ ID           │ NAME                │ STATUS │ OWNER      │ TASKS      │
+├──────────────┼─────────────────────┼────────┼────────────┼────────────┤
+│ prj_abc123   │ Website Redesign    │ Active │ John Doe   │ 45/100     │
+│ prj_def456   │ Mobile App v2       │ Active │ Jane Smith │ 23/50      │
+│ prj_ghi789   │ Marketing Campaign  │ Paused │ Bob Wilson │ 10/30      │
+└──────────────┴─────────────────────┴────────┴────────────┴────────────┘
+Get Project Details
+bash# Get project by ID
+example projects get prj_abc123
+
+# Get with statistics
+example projects get prj_abc123 --stats
+
+# Get and open in browser
+example projects get prj_abc123 --web
