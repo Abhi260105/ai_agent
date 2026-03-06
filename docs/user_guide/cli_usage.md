@@ -138,3 +138,96 @@ example projects get prj_abc123 --stats
 
 # Get and open in browser
 example projects get prj_abc123 --web
+
+Create Project
+bash# Interactive mode
+example projects create
+
+# With inline arguments
+example projects create \
+  --name "Q2 Product Launch" \
+  --description "Launch new features for Q2 2026" \
+  --template software-dev \
+  --visibility private
+
+# From JSON file
+example projects create --from-file project.json
+project.json:
+json{
+  "name": "Q2 Product Launch",
+  "description": "Launch new features for Q2 2026",
+  "template": "software-dev",
+  "settings": {
+    "visibility": "private",
+    "enable_notifications": true
+  },
+  "members": [
+    "john@example.com",
+    "jane@example.com"
+  ]
+}
+Update Project
+bash# Update project details
+example projects update prj_abc123 \
+  --name "Q2 Product Launch v2" \
+  --status active
+
+# Update settings
+example projects update prj_abc123 \
+  --set-setting visibility=public
+
+# Archive project
+example projects archive prj_abc123
+Delete Project
+bash# Delete with confirmation
+example projects delete prj_abc123
+
+# Force delete (skip confirmation)
+example projects delete prj_abc123 --force
+
+# Delete multiple
+example projects delete prj_abc123 prj_def456 prj_ghi789
+
+Task Management
+List Tasks
+bash# List all tasks
+example tasks list
+
+# List tasks in project
+example tasks list --project prj_abc123
+
+# Filter tasks
+example tasks list --status todo
+example tasks list --assignee john@example.com
+example tasks list --priority high
+example tasks list --due-before 2026-02-20
+
+# Multiple filters
+example tasks list \
+  --project prj_abc123 \
+  --status "in-progress" \
+  --assignee me \
+  --priority high
+
+# Sort results
+example tasks list --sort created_at:desc
+example tasks list --sort priority:asc,due_date:asc
+Create Task
+bash# Interactive mode
+example tasks create
+
+# Quick create
+example tasks create "Design homepage mockup"
+
+# With full details
+example tasks create \
+  --title "Implement user authentication" \
+  --description "Add OAuth 2.0 support" \
+  --project prj_abc123 \
+  --assignee jane@example.com \
+  --priority high \
+  --due 2026-02-20 \
+  --tags backend,security
+
+# Natural language parsing
+example tasks create "Fix bug #123 due tomorrow @john !urgent"
