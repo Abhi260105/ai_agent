@@ -103,3 +103,111 @@ Filter by type
 Recent searches
 Keyboard navigation
 Quick actions
+Search Operators:
+"exact phrase"          Exact match
+project:website         In specific project
+assignee:@me           Assigned to you
+status:done            By status
+due:today              Due today
+priority:high          High priority
+created:>2026-02-01    Date range
+
+Projects
+Project List View
+┌─────────────────────────────────────────────────────────┐
+│ Projects                          [+ New Project] [⚙]   │
+├─────────────────────────────────────────────────────────┤
+│ Filters: [All ▼] [Active ▼] [Owner ▼]    🔍 Search      │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ ┌──────────────────────────────────────────────────┐   │
+│ │ 📁 Website Redesign                    ⭐ ⚙ ⋮  │   │
+│ │ Q2 2026 website refresh                          │   │
+│ │ Progress: ████████░░ 80% (40/50 tasks)          │   │
+│ │ Owner: John Doe • Due: Feb 28 • 8 members       │   │
+│ └──────────────────────────────────────────────────┘   │
+│                                                          │
+│ ┌──────────────────────────────────────────────────┐   │
+│ │ 📱 Mobile App v2                      ⭐ ⚙ ⋮  │   │
+│ │ Next generation mobile application               │   │
+│ │ Progress: ████░░░░░░ 40% (20/50 tasks)          │   │
+│ │ Owner: Jane Smith • Due: Mar 15 • 5 members     │   │
+│ └──────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+View Options:
+
+Grid View: Card layout
+List View: Compact rows
+Board View: Kanban style
+Timeline: Gantt chart
+
+Sort By:
+
+Name
+Created date
+Due date
+Progress
+Owner
+
+Project Detail View
+Tabs:
+
+Overview
+
+Project description
+Key metrics
+Recent activity
+Team members
+
+
+Tasks
+
+Task board/list
+Filters and search
+Bulk actions
+
+
+Files
+
+File browser
+Folder structure
+Upload/download
+
+
+Activity
+
+Full activity log
+Filters by type
+Export options
+
+
+Settings
+
+Project details
+Permissions
+Integrations
+Advanced settings
+
+
+
+Creating Projects
+Step-by-Step:
+
+Click "+ New Project"
+Choose Template:
+
+   ┌─────────────────────────────────────┐
+   │ Choose a template                    │
+   ├─────────────────────────────────────┤
+   │ [📦] Blank                          │
+   │     Start from scratch               │
+   │                                      │
+   │ [💻] Software Development           │
+   │     Sprints, bugs, releases          │
+   │                                      │
+   │ [📱] Marketing Campaign             │
+   │     Assets, approvals, analytics     │
+   │                                      │
+   │ [📊] Content Calendar               │
+   │     Publishing workflow              │
+   └─────────────────────────────────────┘
