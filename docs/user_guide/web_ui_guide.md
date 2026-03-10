@@ -211,3 +211,56 @@ Choose Template:
    │ [📊] Content Calendar               │
    │     Publishing workflow              │
    └─────────────────────────────────────┘
+
+   Project Details:
+
+   Name: Website Redesign
+   Description: Q2 2026 website refresh
+   
+   Start Date: [Feb 1, 2026]
+   Due Date: [Feb 28, 2026]
+   
+   Visibility: ○ Private  ● Team  ○ Public
+   
+   Tags: design, website, q2-2026
+
+Team Members:
+
+   Add members:
+   [Search for people...]
+   
+   ✓ John Doe (Owner)
+   ✓ Jane Smith (Admin)
+   ✓ Bob Wilson (Member)
+   
+   [+ Add more members]
+
+Click "Create Project"
+
+
+Tasks
+Task Board View
+┌─────────────────────────────────────────────────────────┐
+│ Website Redesign                 [+ Add Task] View: ▼   │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ To Do (8)      In Progress (5)    Review (3)    Done    │
+│ ─────────      ──────────────     ────────      ─────   │
+│ ┌──────────┐  ┌──────────────┐  ┌─────────┐  ┌──────┐ │
+│ │ Design   │  │ Implement    │  │ Homepage │  │ Logo │ │
+│ │ homepage │  │ navigation   │  │ review   │  │ done │ │
+│ │          │  │ @jane !HIGH  │  │ @john    │  └──────┘ │
+│ │ @alice   │  └──────────────┘  └─────────┘           │
+│ │ Due: 2/15│                                            │
+│ └──────────┘  ┌──────────────┐                        │
+│               │ Fix login    │                        │
+│ ┌──────────┐ │ bug #245     │                        │
+│ │ Write    │ │ @bob         │                        │
+│ │ docs     │ └──────────────┘                        │
+│ └──────────┘                                           │
+└─────────────────────────────────────────────────────────┘
+Drag and Drop:
+
+Drag tasks between columns
+Reorder within columns
+Bulk select (Shift+Click)
