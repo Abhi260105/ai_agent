@@ -370,3 +370,109 @@ Full Task Form:
 │                                          │
 │           [Cancel]  [Create Task]       │
 └─────────────────────────────────────────┘
+
+Natural Language Input:
+Type: "Design mockup due friday @alice !high #design"
+Creates task with:
+- Title: Design mockup
+- Due: This Friday
+- Assignee: Alice
+- Priority: High
+- Tags: design
+
+Files
+File Browser
+┌─────────────────────────────────────────────────────────┐
+│ Files                           [↑ Upload] [+ Folder]   │
+├─────────────────────────────────────────────────────────┤
+│ 📁 designs/                                              │
+│   📁 v1/                                                │
+│   📁 v2/                                                │
+│     📄 homepage-mockup.png    2.3 MB    Feb 10         │
+│     📄 mobile-mockup.png      1.8 MB    Feb 10         │
+│   📄 style-guide.pdf          4.5 MB    Feb 5          │
+│                                                          │
+│ 📁 documents/                                           │
+│   📄 requirements.docx        245 KB    Feb 1          │
+│   📄 timeline.xlsx            128 KB    Feb 1          │
+│                                                          │
+│ 📄 README.md                  3 KB      Jan 28         │
+└─────────────────────────────────────────────────────────┘
+View Options:
+
+Grid: Thumbnail view
+List: Detailed list (default)
+Tree: Hierarchical structure
+
+Upload Files
+Methods:
+
+Drag and Drop
+
+Drag files anywhere in file browser
+Multiple files supported
+Folders supported
+
+
+Click Upload
+
+Click "Upload" button
+Select files
+Choose destination folder
+
+
+Paste
+
+Copy files (Cmd+C)
+Paste in browser (Cmd+V)
+Auto-upload
+
+
+
+Upload Progress:
+┌─────────────────────────────────────┐
+│ Uploading files...                   │
+├─────────────────────────────────────┤
+│ homepage-mockup.png                  │
+│ ████████████████░░░░ 80% (1.8/2.3MB)│
+│                                      │
+│ mobile-mockup.png                    │
+│ ████░░░░░░░░░░░░ 25% (450KB/1.8MB)  │
+│                                      │
+│ [Cancel]                [Minimize]  │
+└─────────────────────────────────────┘
+File Preview
+Supported Types:
+
+Images: PNG, JPG, GIF, SVG
+Documents: PDF, DOCX, XLSX
+Code: JS, PY, HTML, CSS, JSON
+Media: MP4, MP3
+Text: TXT, MD, CSV
+
+Preview Actions:
+
+🔍 Zoom in/out
+⬅️➡️ Previous/Next file
+↓ Download
+🔗 Copy link
+💬 Comment
+🗑️ Delete
+
+Code Preview:
+javascript┌─────────────────────────────────────────┐
+│ app.js                    [Copy] [Edit] │
+├─────────────────────────────────────────┤
+│  1  import React from 'react';          │
+│  2                                       │
+│  3  function App() {                     │
+│  4    return (                           │
+│  5      <div className="App">            │
+│  6        <h1>Hello World</h1>           │
+│  7      </div>                           │
+│  8    );                                 │
+│  9  }                                    │
+│ 10                                       │
+│ 11  export default App;                  │
+└─────────────────────────────────────────┘
+Syntax highlighting for 50+ languages
