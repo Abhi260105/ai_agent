@@ -264,3 +264,109 @@ Drag and Drop:
 Drag tasks between columns
 Reorder within columns
 Bulk select (Shift+Click)
+
+Task List View
+┌─────────────────────────────────────────────────────────┐
+│ Filters: [All ▼] [Assignee ▼] [Priority ▼] [Due ▼]     │
+├──┬────────────────────────────┬──────────┬──────┬───────┤
+│☐ │ Design homepage mockup     │ @alice   │ !HIGH│ 2/15 │
+│☐ │ Implement navigation       │ @jane    │ !HIGH│ 2/18 │
+│☐ │ Fix login bug #245         │ @bob     │ !MED │ 2/20 │
+│☑ │ Create logo                │ @john    │ !LOW │ 2/10 │
+└──┴────────────────────────────┴──────────┴──────┴───────┘
+Bulk Actions:
+
+Select tasks (checkbox)
+Click "Actions" menu
+Choose action:
+
+Assign
+Change status
+Set priority
+Update due date
+Add tags
+Delete
+
+
+
+Task Detail View
+Layout:
+┌─────────────────────────────────────────────────────────┐
+│ [←] Design homepage mockup                    [⋮ More] │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ Status: [In Progress ▼]    Priority: [!HIGH ▼]         │
+│ Assignee: [@alice ▼]       Due: [Feb 15, 2026]         │
+│ Tags: [design] [frontend] [+ Add tag]                  │
+│                                                          │
+│ ────────────────────────────────────────────────────    │
+│                                                          │
+│ Description                                              │
+│ Create high-fidelity mockup for the new homepage        │
+│ following the design system guidelines.                 │
+│                                                          │
+│ ────────────────────────────────────────────────────    │
+│                                                          │
+│ Attachments (3)                                         │
+│ 📄 wireframe.pdf         📷 reference.png              │
+│ 🎨 design-system.fig                                    │
+│                                                          │
+│ ────────────────────────────────────────────────────    │
+│                                                          │
+│ Subtasks (3/5 complete)                                 │
+│ ☑ Research competitors                                  │
+│ ☑ Create wireframe                                     │
+│ ☑ Review with team                                     │
+│ ☐ High-fidelity mockup                                 │
+│ ☐ Final review                                         │
+│                                                          │
+│ ────────────────────────────────────────────────────    │
+│                                                          │
+│ Comments (5)                                            │
+│ Jane: Looking good! Minor feedback...                   │
+│ You: @jane Thanks! Will address today.                 │
+│                                                          │
+│ [Write a comment...                          [Send]│   │
+└─────────────────────────────────────────────────────────┘
+Quick Actions:
+
+E - Edit task
+C - Add comment
+A - Assign to me
+Space - Toggle complete
+Cmd+Enter - Save and close
+
+Creating Tasks
+Quick Add (from anywhere):
+
+Press N or click "+" button
+Type task title
+Press Enter
+
+Full Task Form:
+┌─────────────────────────────────────────┐
+│ Create Task                              │
+├─────────────────────────────────────────┤
+│ Title *                                  │
+│ [Design homepage mockup            ]    │
+│                                          │
+│ Description                              │
+│ [Create high-fidelity mockup...    ]    │
+│                                          │
+│ Project                                  │
+│ [Website Redesign ▼]                    │
+│                                          │
+│ Assignee                                 │
+│ [@alice ▼]                              │
+│                                          │
+│ Priority         Due Date                │
+│ [!HIGH ▼]       [Feb 15, 2026]          │
+│                                          │
+│ Tags                                     │
+│ [design] [frontend] [+ Add]             │
+│                                          │
+│ Attachments                              │
+│ [Drag files here or click to upload]    │
+│                                          │
+│           [Cancel]  [Create Task]       │
+└─────────────────────────────────────────┘
