@@ -549,3 +549,76 @@ Notification Center
 │ ⚠️ Task "Review PR #123" is due tomorrow                │
 │    Mobile App v2 • 3 hours ago                          │
 └─────────────────────────────────────────────────────────┘
+
+Notification Types:
+
+🔵 Assignment
+💬 Comment/mention
+✅ Completion
+📎 File upload
+⚠️ Deadline
+👥 Team update
+📊 Report ready
+
+Notification Settings
+Receive notifications for:
+
+Email Notifications
+☑ Tasks assigned to me
+☑ Comments mentioning me
+☑ Task completions
+☐ Daily digest
+☐ Weekly summary
+
+Push Notifications
+☑ Immediate (important only)
+☐ Bundled (every 15 min)
+☐ Off
+
+Do Not Disturb
+Time: [9:00 PM] to [8:00 AM]
+☑ Weekends
+
+Reports
+Analytics Dashboard
+┌─────────────────────────────────────────────────────────┐
+│ Analytics                        Export: [PDF ▼] [📊]   │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ ┌───────────────────┐  ┌───────────────────┐           │
+│ │ Tasks Completed   │  │ Team Velocity     │           │
+│ │                   │  │                   │           │
+│ │      156          │  │  📈 12.5          │           │
+│ │   +23% vs last    │  │  tasks/week       │           │
+│ │      week         │  │  ↑ 8% trend       │           │
+│ └───────────────────┘  └───────────────────┘           │
+│                                                          │
+│ ┌─────────────────────────────────────────────────────┐ │
+│ │ Task Completion Over Time                           │ │
+│ │ ───────────────────────────────────────────────────│ │
+│ │        ┌─┐                                          │ │
+│ │        │ │     ┌─┐                                  │ │
+│ │     ┌─┐│ │  ┌─┐│ │                                  │ │
+│ │  ┌─┐│ ││ │  │ ││ │                                  │ │
+│ │  │ ││ ││ │┌─┐│ ││ │                                  │ │
+│ │  └─┘└─┘└─┘└─┘└─┘└─┘                                  │ │
+│ │  Mon Tue Wed Thu Fri Sat Sun                        │ │
+│ └─────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+Available Reports:
+
+Task completion
+Team productivity
+Time tracking
+Project progress
+Resource allocation
+Burndown charts
+Custom reports
+
+Export Options
+
+PDF: Print-ready report
+CSV: Data export
+Excel: Spreadsheet
+JSON: Raw data
+Image: Chart/graph
