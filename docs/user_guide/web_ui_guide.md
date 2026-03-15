@@ -697,3 +697,29 @@ Press ? to view all shortcuts:
 │                                          │
 │ See full list: docs.example.com/shortcuts│
 └─────────────────────────────────────────┘
+Tips & Tricks
+1. Multiple Task Creation
+Create multiple tasks at once:
+Design homepage
+Implement navigation
+Write tests
+Review code
+Each line becomes a task.
+2. Task Templates
+Save common task structures as templates for quick reuse.
+3. Smart Dates
+Use natural language:
+
+"tomorrow"
+"next friday"
+"in 2 weeks"
+"end of month"
+
+4. Quick Filters
+Save filter combinations as "Saved Views" for instant access.
+5. Markdown Support
+Use Markdown in descriptions and comments:
+markdown**Bold** *italic* `code`
+- Lists
+- [ ] Checkboxes
+[Links](url)
