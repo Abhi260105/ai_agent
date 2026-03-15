@@ -476,3 +476,76 @@ javascript┌──────────────────────�
 │ 11  export default App;                  │
 └─────────────────────────────────────────┘
 Syntax highlighting for 50+ languages
+
+Team
+Team Members View
+┌─────────────────────────────────────────────────────────┐
+│ Team Members (12)              [+ Invite Member] [⚙]    │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ 👤 John Doe                            [⋮ More]   │ │
+│ │ john@example.com • Owner                          │ │
+│ │ 🟢 Online • Last active: now                      │ │
+│ │ Projects: 5 • Tasks: 23 active                    │ │
+│ └────────────────────────────────────────────────────┘ │
+│                                                          │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ 👤 Jane Smith                          [⋮ More]   │ │
+│ │ jane@example.com • Admin                          │ │
+│ │ 🟡 Away • Last active: 15 min ago                 │ │
+│ │ Projects: 3 • Tasks: 15 active                    │ │
+│ └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+Member Card Actions:
+
+View profile
+Send message
+Assign tasks
+View activity
+Change role
+Remove from team
+
+Invite Members
+┌─────────────────────────────────────────┐
+│ Invite Team Members                      │
+├─────────────────────────────────────────┤
+│ Email addresses (comma-separated)        │
+│ [jane@example.com, bob@example.com]     │
+│                                          │
+│ Role                                     │
+│ [Member ▼]                              │
+│                                          │
+│ Add to projects                          │
+│ ☑ Website Redesign                      │
+│ ☐ Mobile App v2                         │
+│ ☐ Marketing Campaign                    │
+│                                          │
+│ Personal message (optional)              │
+│ [Welcome to the team! 🎉           ]   │
+│                                          │
+│           [Cancel]  [Send Invites]      │
+└─────────────────────────────────────────┘
+
+Notifications
+Notification Center
+┌─────────────────────────────────────────────────────────┐
+│ Notifications                   [Mark all read] [⚙]     │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│ 🔵 Jane assigned you to "Design homepage"               │
+│    Website Redesign • 5 min ago                         │
+│                                                          │
+│ 💬 Bob commented on "Fix login bug"                     │
+│    "This is fixed now, please review"                   │
+│    Mobile App v2 • 15 min ago                           │
+│                                                          │
+│ ✅ "Create logo" was completed by John                  │
+│    Website Redesign • 1 hour ago                        │
+│                                                          │
+│ 📎 Alice uploaded design-v2.png                         │
+│    Website Redesign • 2 hours ago                       │
+│                                                          │
+│ ⚠️ Task "Review PR #123" is due tomorrow                │
+│    Mobile App v2 • 3 hours ago                          │
+└─────────────────────────────────────────────────────────┘
