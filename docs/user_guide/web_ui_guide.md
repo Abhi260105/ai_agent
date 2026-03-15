@@ -622,3 +622,78 @@ CSV: Data export
 Excel: Spreadsheet
 JSON: Raw data
 Image: Chart/graph
+Settings
+Account Settings
+Profile:
+
+Name, email, photo
+Password change
+Two-factor authentication
+Connected accounts
+
+Preferences:
+
+Language
+Time zone
+Date format
+Theme (light/dark/auto)
+Notifications
+
+Privacy:
+
+Profile visibility
+Activity visibility
+Email preferences
+
+Organization Settings
+General:
+
+Organization name
+Logo
+Domain
+
+Team:
+
+Members
+Roles
+Invitations
+
+Billing:
+
+Current plan
+Payment method
+Invoices
+Usage
+
+Integrations:
+
+Connected apps
+API keys
+Webhooks
+SSO configuration
+
+
+Keyboard Shortcuts
+Press ? to view all shortcuts:
+┌─────────────────────────────────────────┐
+│ Keyboard Shortcuts                  [×] │
+├─────────────────────────────────────────┤
+│ NAVIGATION                               │
+│ G then H      Go to Home                │
+│ G then P      Go to Projects            │
+│ G then T      Go to Tasks               │
+│ G then S      Go to Settings            │
+│                                          │
+│ ACTIONS                                  │
+│ N             New task                  │
+│ /  Cmd+K      Search                    │
+│ ?             This help                 │
+│                                          │
+│ TASK VIEW                                │
+│ E             Edit                      │
+│ C             Comment                   │
+│ A             Assign to me              │
+│ Space         Toggle complete           │
+│                                          │
+│ See full list: docs.example.com/shortcuts│
+└─────────────────────────────────────────┘
