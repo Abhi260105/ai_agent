@@ -173,4 +173,84 @@ Active Projects:
    Due: Feb 20 | Budget: $500 | Status: 90%
 Task Prioritization
 Priority Matrix:
-                Urgent         
+                Urgent          Not Urgent
+Important    | 1. Client     | 2. Portfolio  |
+             | revisions     | updates       |
+             |              |               |
+Not Important| 3. Admin     | 4. Learning   |
+             | tasks        | new tools     |
+Daily Workflow
+Morning (9:00-12:00):
+
+Focus work on Priority 1 tasks
+No interruptions
+Deep design work
+
+Afternoon (1:00-3:00):
+
+Client calls
+Revisions
+Email responses
+
+Evening (3:00-5:00):
+
+Administrative tasks
+Invoice preparation
+Portfolio updates
+
+Client Communication
+Task Comments as Communication Log:
+You: Initial mockup attached for review
+Client: Love the direction! Can we try darker blue?
+You: Updated mockup with darker blue - see v2.png
+Client: Perfect! Approved ✓
+Time Tracking
+Per Project:
+Acme Corp Website:
+- Design: 12h
+- Revisions: 3h
+- Meetings: 2h
+Total: 17h / 40h budgeted
+Invoicing
+Monthly Process:
+
+Export time logs
+Calculate billable hours
+Generate invoice
+Attach as file to project
+Mark as sent in task
+
+
+Example 4: Event Planning
+Scenario
+Planning a company conference for 200 attendees.
+Event Breakdown
+6 Months Before:
+
+Venue selection
+Date confirmation
+Budget approval
+Speaker outreach
+
+3 Months Before:
+
+Agenda finalization
+Vendor contracts
+Marketing launch
+Registration setup
+
+1 Month Before:
+
+Final attendee count
+Catering confirmation
+AV setup
+Materials printing
+
+1 Week Before:
+
+Final walkthroughs
+Staff briefings
+Emergency contacts
+Backup plans
+
+Vendor Management         
