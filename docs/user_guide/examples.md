@@ -46,3 +46,47 @@ End of Day:
 Log time spent on tasks
 Update progress notes
 Set tomorrow's priorities
+Sprint Planning
+Week Before Sprint:
+
+Product owner adds stories to backlog
+Team estimates story points
+Team votes on priorities
+
+Sprint Start:
+
+Move selected tasks to sprint board
+Assign tasks to team members
+Set sprint goals
+
+Sprint End:
+
+Review completed work
+Retrospective meeting
+Archive sprint
+Plan next sprint
+
+Automation
+GitHub Integration:
+
+Commits auto-link to tasks
+PRs create "Code Review" tasks
+Merge triggers task status update
+
+Slack Integration:
+
+Daily standup reminder
+PR review notifications
+Build status updates
+
+
+Example 2: Marketing Campaign
+Scenario
+Marketing team launching a product campaign.
+Campaign Timeline
+Week 1: Planning & Research
+Week 2: Content Creation
+Week 3: Design & Production
+Week 4: Review & Approval
+Week 5: Launch & Monitor
+Task Breakdown
