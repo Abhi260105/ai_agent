@@ -498,3 +498,62 @@ Instructor:
 Write scripts
 Record videos
 Answer student questions
+
+Video Editor:
+
+Edit recordings
+Add effects
+Export files
+
+Reviewer:
+
+Check accuracy
+Verify quality
+Approve content
+
+Progress Tracking
+Module 1: ████████████████ 100% (3/3 lessons)
+Module 2: ████████░░░░░░░░ 50% (2/4 lessons)
+Module 3: ████░░░░░░░░░░░░ 25% (1/4 lessons)
+Module 4: ░░░░░░░░░░░░░░░░ 0% (0/1 lessons)
+
+Example 8: Home Renovation
+Scenario
+Managing a home renovation project.
+Project Phases
+Planning:
+
+Get quotes
+Choose contractor
+Select materials
+Obtain permits
+
+Demolition:
+
+Clear room
+Remove fixtures
+Dispose of debris
+
+Construction:
+
+Framing
+Electrical
+Plumbing
+Drywall
+
+Finishing:
+
+Painting
+Flooring
+Fixtures
+Cleanup
+
+Budget Tracking
+Budget: $50,000
+
+Spent:
+- Contractor: $25,000
+- Materials: $12,000
+- Permits: $2,000
+- Contingency: $5,000
+Total: $44,000
