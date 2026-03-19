@@ -253,4 +253,100 @@ Staff briefings
 Emergency contacts
 Backup plans
 
-Vendor Management         
+Vendor Management
+Tracking Sheet:
+┌────────────┬────────────┬─────────┬──────────┐
+│ Vendor     │ Service    │ Cost    │ Status   │
+├────────────┼────────────┼─────────┼──────────┤
+│ Hilton     │ Venue      │ $15,000 │ Booked   │
+│ AV Solutions│ Tech      │ $5,000  │ Confirmed│
+│ Gourmet Co │ Catering   │ $8,000  │ Pending  │
+│ PrintPro   │ Materials  │ $1,500  │ Ordered  │
+└────────────┴────────────┴─────────┴──────────┘
+Day-of Coordination
+Timeline Tasks:
+7:00 AM - Venue access, setup begins
+8:00 AM - AV check
+8:30 AM - Registration opens
+9:00 AM - Welcome session
+10:00 AM - Keynote speaker
+...
+Each time slot = separate task with:
+
+Responsible person
+Checklist
+Backup contacts
+
+Post-Event
+Wrap-up Tasks:
+
+Send thank you emails
+Gather feedback surveys
+Process expenses
+Write event report
+Archive materials
+
+
+Example 5: Content Creation Workflow
+Scenario
+Blog publishing with editorial calendar.
+Monthly Calendar
+Week 1: "10 Tips for Remote Work"
+- Research: Mon-Tue
+- Draft: Wed
+- Review: Thu
+- Publish: Fri
+
+Week 2: "Product Update Announcement"
+- Draft: Mon-Tue
+- Design graphics: Wed
+- Review: Thu
+- Publish: Fri
+Content Pipeline
+Idea → Outline → Draft → Edit → Design → Review → Publish → Promote
+Idea Stage:
+
+Brainstorm in comments
+Research keywords
+Check competition
+Assign to writer
+
+Draft Stage:
+
+Writer creates in Google Docs
+Link doc to task
+Add to draft status
+Request review
+
+Edit Stage:
+
+Editor reviews doc
+Suggests changes
+Approves or sends back
+
+Design Stage:
+
+Create featured image
+Design social graphics
+Create thumbnails
+
+Publish Stage:
+
+Schedule in CMS
+Prepare social posts
+Set up email
+
+Promote Stage:
+
+Share on social
+Send email
+Post in communities
+
+Analytics Tracking
+Per Article:
+Title: "10 Tips for Remote Work"
+Published: Feb 1, 2026
+Views: 5,234
+Time on page: 3:45
+Shares: 234
+Conversions: 45         
