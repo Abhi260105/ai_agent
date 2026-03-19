@@ -557,3 +557,56 @@ Spent:
 - Permits: $2,000
 - Contingency: $5,000
 Total: $44,000
+
+Remaining: $6,000
+Vendor Coordination
+Task List:
+□ Electrician - Install outlets (Thu)
+□ Plumber - Install sink (Fri)
+□ Painter - First coat (Mon)
+□ Flooring - Install hardwood (Tue-Wed)
+Photo Documentation
+Before/During/After:
+
+Upload photos to project
+Tag with room and date
+Create visual timeline
+
+
+Tips for All Use Cases
+1. Template Reuse
+Create project templates for recurring work:
+
+Save successful project structure
+Reuse for similar projects
+Adjust as needed
+
+2. Automation Rules
+Set up automation:
+
+When task moves to "Done" → Send notification
+When due date approaches → Alert assignee
+When file uploaded → Notify team
+
+3. Regular Reviews
+Schedule recurring tasks:
+
+Weekly team sync
+Monthly project review
+Quarterly planning
+
+4. Integration Usage
+Connect your tools:
+
+Calendar sync
+Time tracking
+Communication apps
+Storage services
+
+5. Documentation
+Maintain project wiki:
+
+Process documentation
+Best practices
+Lessons learned
+Resource links
