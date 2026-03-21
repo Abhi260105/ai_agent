@@ -78,4 +78,110 @@ def make_request_with_backoff(func, max_retries=5):
 
 # Usage
 result = make_request_with_backoff(lambda: client.users.list())
-2. Monitor Rate Lim
+2. Monitor Rate Limit Headers
+Check remaining requests before making calls:
+pythonclass RateLimitAwareClient:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.remaining = None
+        self.reset_at = None
+    
+    def request(self, endpoint, **kwargs):
+        # Check if we should wait
+        if self.remaining is not None and self.remaining < 10:
+            if self.reset_at:
+                wait_time = self.reset_at - time.time()
+                if wait_time > 0:
+                    print(f"Approaching rate limit. Waiting {wait_time:.0f}s")
+                    time.sleep(wait_time)
+        
+        # Make request
+        response = requests.get(endpoint, **kwargs)
+        
+        # Update rate limit state
+        self.remaining = int(response.headers.get('X-RateLimit-Remaining', 0))
+        self.reset_at = int(response.headers.get('X-RateLimit-Reset', 0))
+        
+        return response
+3. Use Caching
+Cache responses to reduce API calls:
+pythonfrom functools import lru_cache
+import time
+
+@lru_cache(maxsize=128)
+def get_user_cached(user_id, cache_key):
+    """Cached user lookup. Cache key changes every 5 minutes."""
+    return client.users.get(user_id)
+
+# Use cache key that changes every 5 minutes
+cache_key = int(time.time()) // 300
+user = get_user_cached('usr_123', cache_key)
+4. Batch Operations
+Use batch endpoints to reduce request count:
+python# ❌ Don't: Multiple individual requests
+for user_data in users_to_create:
+    client.users.create(user_data)  # 100 requests
+
+# ✅ Do: Single batch request
+client.batch.execute([
+    {'method': 'POST', 'path': '/users', 'body': user_data}
+    for user_data in users_to_create
+])  # 1 request
+5. Implement Request Queuing
+Queue requests to stay within limits:
+pythonimport queue
+import threading
+import time
+
+class RateLimitedQueue:
+    def __init__(self, requests_per_minute=60):
+        self.queue = queue.Queue()
+        self.requests_per_minute = requests_per_minute
+        self.min_interval = 60 / requests_per_minute
+        self.last_request_time = 0
+        self.running = False
+    
+    def start(self):
+        """Start processing queue."""
+        self.running = True
+        thread = threading.Thread(target=self._process_queue)
+        thread.daemon = True
+        thread.start()
+    
+    def _process_queue(self):
+        """Process queued requests."""
+        while self.running:
+            try:
+                func, args, kwargs = self.queue.get(timeout=1)
+                
+                # Wait if needed to respect rate limit
+                elapsed = time.time() - self.last_request_time
+                if elapsed < self.min_interval:
+                    time.sleep(self.min_interval - elapsed)
+                
+                # Execute request
+                func(*args, **kwargs)
+                self.last_request_time = time.time()
+                
+                self.queue.task_done()
+            except queue.Empty:
+                continue
+    
+    def add(self, func, *args, **kwargs):
+        """Add request to queue."""
+        self.queue.put((func, args, kwargs))
+    
+    def wait_completion(self):
+        """Wait for all queued requests to complete."""
+        self.queue.join()
+
+# Usage
+queue = RateLimitedQueue(requests_per_minute=60)
+queue.start()
+
+# Add requests to queue
+for user_id in user_ids:
+    queue.add(client.users.get, user_id)
+
+# Wait for completion
+queue.wait_completion()
