@@ -185,3 +185,31 @@ for user_id in user_ids:
 
 # Wait for completion
 queue.wait_completion()
+6. Distribute Load Across Time
+For large batch operations, spread requests over time:
+pythonimport time
+
+def process_large_batch(items, process_func, requests_per_minute=60):
+    """Process large batch while respecting rate limits."""
+    interval = 60 / requests_per_minute
+    
+    for i, item in enumerate(items):
+        process_func(item)
+        
+        # Progress indication
+        if (i + 1) % 100 == 0:
+            print(f"Processed {i + 1}/{len(items)} items")
+        
+        # Rate limiting
+        if i < len(items) - 1:  # Don't wait after last item
+            time.sleep(interval)
+
+# Usage
+process_large_batch(
+    items=users_to_update,
+    process_func=lambda user: client.users.update(user['id'], user['data']),
+    requests_per_minute=50  # Stay below limit
+)
+Webhook Rate Limits
+Webhooks sent to your endpoints are also rate-limited:
+MetricLimitNotesEvents/Second10Per webhook endpointRetries5With exponential backoffTimeout10sPer webhook delivery
